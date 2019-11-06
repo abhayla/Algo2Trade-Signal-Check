@@ -36,25 +36,13 @@ Public Class VolumeWithCandleRange
                     Dim stockPayload As Dictionary(Of Date, Payload) = Nothing
                     Select Case _category
                         Case "Cash"
-                            Dim tradingSymbolToken As Tuple(Of String, String) = _cmn.GetCurrentTradingSymbolWithInstrumentToken(Common.DataBaseTable.Intraday_Cash, chkDate, stock)
-                            If tradingSymbolToken IsNot Nothing Then
-                                stockPayload = _cmn.GetRawPayloadForSpecificTradingSymbol(Common.DataBaseTable.Intraday_Cash, tradingSymbolToken.Item2, chkDate.AddDays(-7), chkDate)
-                            End If
+                            stockPayload = _cmn.GetRawPayload(Common.DataBaseTable.Intraday_Cash, stock, chkDate.AddDays(-7), chkDate)
                         Case "Currency"
-                            Dim tradingSymbolToken As Tuple(Of String, String) = _cmn.GetCurrentTradingSymbolWithInstrumentToken(Common.DataBaseTable.Intraday_Currency, chkDate, stock)
-                            If tradingSymbolToken IsNot Nothing Then
-                                stockPayload = _cmn.GetRawPayloadForSpecificTradingSymbol(Common.DataBaseTable.Intraday_Currency, tradingSymbolToken.Item2, chkDate.AddDays(-7), chkDate)
-                            End If
+                            stockPayload = _cmn.GetRawPayload(Common.DataBaseTable.Intraday_Currency, stock, chkDate.AddDays(-7), chkDate)
                         Case "Commodity"
-                            Dim tradingSymbolToken As Tuple(Of String, String) = _cmn.GetCurrentTradingSymbolWithInstrumentToken(Common.DataBaseTable.Intraday_Commodity, chkDate, stock)
-                            If tradingSymbolToken IsNot Nothing Then
-                                stockPayload = _cmn.GetRawPayloadForSpecificTradingSymbol(Common.DataBaseTable.Intraday_Commodity, tradingSymbolToken.Item2, chkDate.AddDays(-7), chkDate)
-                            End If
+                            stockPayload = _cmn.GetRawPayload(Common.DataBaseTable.Intraday_Commodity, stock, chkDate.AddDays(-7), chkDate)
                         Case "Future"
-                            Dim tradingSymbolToken As Tuple(Of String, String) = _cmn.GetCurrentTradingSymbolWithInstrumentToken(Common.DataBaseTable.Intraday_Futures, chkDate, stock)
-                            If tradingSymbolToken IsNot Nothing Then
-                                stockPayload = _cmn.GetRawPayloadForSpecificTradingSymbol(Common.DataBaseTable.Intraday_Futures, tradingSymbolToken.Item2, chkDate.AddDays(-7), chkDate)
-                            End If
+                            stockPayload = _cmn.GetRawPayload(Common.DataBaseTable.Intraday_Futures, stock, chkDate.AddDays(-7), chkDate)
                         Case Else
                             Throw New NotImplementedException
                     End Select
