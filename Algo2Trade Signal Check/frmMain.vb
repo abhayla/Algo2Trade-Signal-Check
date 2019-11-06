@@ -174,7 +174,6 @@ Public Class frmMain
 #End Region
 
 #Region "Event Handlers"
-    Private _canceller As CancellationTokenSource
     Private Sub OnHeartbeat(message As String)
         SetLabelText_ThreadSafe(lblProgress, message)
     End Sub
@@ -188,6 +187,8 @@ Public Class frmMain
         OnHeartbeat(String.Format("{0}, waiting {1}/{2} secs", msg, elapsedSecs, totalSecs))
     End Sub
 #End Region
+
+    Private _canceller As CancellationTokenSource
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         SetObjectEnableDisable_ThreadSafe(btnView, True)
