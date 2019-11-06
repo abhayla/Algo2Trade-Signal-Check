@@ -263,6 +263,7 @@ Public Class frmMain
         Dim rule As Rule = Nothing
 
         Try
+            _canceller = New CancellationTokenSource
             Select Case selectedRule
                 Case 0
                     rule = New StallPattern(_canceller, category, timeFrame, useHA, instrumentName, filePath)
