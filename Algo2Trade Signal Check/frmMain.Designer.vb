@@ -46,6 +46,7 @@ Partial Class frmMain
         Me.txtFilePath = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.dgvSignal = New System.Windows.Forms.DataGridView()
+        Me.opnFile = New System.Windows.Forms.OpenFileDialog()
         CType(Me.nmrcTimeFrame, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         CType(Me.dgvSignal, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -290,6 +291,9 @@ Partial Class frmMain
         Me.dgvSignal.Size = New System.Drawing.Size(1237, 551)
         Me.dgvSignal.TabIndex = 21
         '
+        'opnFile
+        '
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -335,4 +339,5 @@ Partial Class frmMain
     Friend WithEvents txtFilePath As TextBox
     Friend WithEvents Label1 As Label
     Friend WithEvents btnBrowse As Button
+    Friend WithEvents opnFile As OpenFileDialog
 End Class

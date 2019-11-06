@@ -1,5 +1,6 @@
 ﻿Imports Utilities.DAL
 Imports System.Threading
+Imports System.IO
 
 Public Class frmMain
 
@@ -199,13 +200,8 @@ Public Class frmMain
         chkbHA.Checked = My.Settings.UseHA
         txtInstrumentName.Text = My.Settings.Intrument
         txtFilePath.Text = My.Settings.File
-        Try
-            dtpckrFromDate.Value = My.Settings.FromDate
-            dtpckrToDate.Value = My.Settings.ToDate
-        Catch ex As Exception
-            dtpckrFromDate.Value = Now
-            dtpckrToDate.Value = Now
-        End Try
+        If My.Settings.FromDate <> Date.MinValue Then dtpckrFromDate.Value = My.Settings.FromDate
+        If My.Settings.ToDate <> Date.MinValue Then dtpckrToDate.Value = My.Settings.ToDate
     End Sub
 
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
@@ -229,6 +225,20 @@ Public Class frmMain
         End Using
         If MessageBox.Show("Do you want to open file?", "Signal Check CSV File", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             Process.Start(saveFile.FileName)
+        End If
+    End Sub
+
+    Private Sub btnBrowse_Click(sender As Object, e As EventArgs) Handles btnBrowse.Click
+        opnFile.Filter = "|*.csv"
+        opnFile.ShowDialog()
+    End Sub
+
+    Private Sub opnFile_FileOk(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles opnFile.FileOk
+        Dim extension As String = Path.GetExtension(opnFile.FileName)
+        If extension = ".csv" Then
+            txtFilePath.Text = opnFile.FileName
+        Else
+            MsgBox("File Type not supported. Please Try again.", MsgBoxStyle.Critical)
         End If
     End Sub
 
