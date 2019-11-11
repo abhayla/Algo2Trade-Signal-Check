@@ -344,4 +344,61 @@ Public Class frmMain
             SetObjectEnableDisable_ThreadSafe(btnExport, True)
         End Try
     End Function
+
+    Private Sub cmbRule_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbRule.SelectedIndexChanged
+        Dim index As Integer = GetComboBoxIndex_ThreadSafe(cmbRule)
+        Select Case index
+            Case 0
+            Case 1
+                lblDescription.Text = String.Format("Description ...")
+            Case 2
+                lblDescription.Text = String.Format("Description ...")
+            Case 3
+                lblDescription.Text = String.Format("Description ...")
+            Case 4
+                lblDescription.Text = String.Format("Description ...")
+            Case 5
+                lblDescription.Text = String.Format("Description ...")
+            Case 6
+                lblDescription.Text = String.Format("Description ...")
+            Case 7
+                lblDescription.Text = String.Format("Description ...")
+            Case 8
+                lblDescription.Text = String.Format("Description ...")
+            Case 9
+                lblDescription.Text = String.Format("Description ...")
+            Case 10
+                lblDescription.Text = String.Format("Description ...")
+            Case 11
+                lblDescription.Text = String.Format("Description ...")
+            Case 12
+                lblDescription.Text = String.Format("Description ...")
+            Case 13
+                lblDescription.Text = String.Format("Description ...")
+            Case 14
+                lblDescription.Text = String.Format("Description ...")
+            Case 15
+                lblDescription.Text = String.Format("Description ...")
+            Case 16
+                lblDescription.Text = String.Format("Description ...")
+            Case 17
+                lblDescription.Text = String.Format("Description ...")
+            Case 18
+                lblDescription.Text = String.Format("Description ...")
+            Case 19
+                lblDescription.Text = String.Format("Description ...")
+            Case 20
+                lblDescription.Text = String.Format("Description ...")
+            Case 21
+                lblDescription.Text = String.Format("Description ...")
+            Case 22
+                lblDescription.Text = String.Format("Current candle volume is greater than 90% of previous candle volume. Current candle range is greater than 1/3 ATR of the candle. And current candle range with buffer stoploss amount is greater than ₹1000 for respective quantity(calculated for ₹15000 capital)")
+            Case 23
+                lblDescription.Text = String.Format("In a collection of current candle and previous two candle, any one of them is inside bar and difference between highest high and lowest low is less than current candle ATR")
+            Case 24
+                lblDescription.Text = String.Format("Previous two candles form HH-HL and current candle breaks lowest Low of previous two candle and vice versa")
+            Case Else
+                Throw New NotImplementedException
+        End Select
+    End Sub
 End Class

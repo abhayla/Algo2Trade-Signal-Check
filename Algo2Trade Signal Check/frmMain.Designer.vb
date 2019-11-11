@@ -47,6 +47,7 @@ Partial Class frmMain
         Me.Label1 = New System.Windows.Forms.Label()
         Me.dgvSignal = New System.Windows.Forms.DataGridView()
         Me.opnFile = New System.Windows.Forms.OpenFileDialog()
+        Me.lblDescription = New System.Windows.Forms.Label()
         CType(Me.nmrcTimeFrame, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         CType(Me.dgvSignal, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -214,11 +215,10 @@ Partial Class frmMain
         'lblProgress
         '
         Me.lblProgress.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.lblProgress.AutoSize = True
-        Me.lblProgress.Location = New System.Drawing.Point(4, 665)
+        Me.lblProgress.Location = New System.Drawing.Point(4, 657)
         Me.lblProgress.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblProgress.Name = "lblProgress"
-        Me.lblProgress.Size = New System.Drawing.Size(128, 17)
+        Me.lblProgress.Size = New System.Drawing.Size(1128, 29)
         Me.lblProgress.TabIndex = 23
         Me.lblProgress.Text = "Progess Status ....."
         '
@@ -283,22 +283,33 @@ Partial Class frmMain
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dgvSignal.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvSignal.Location = New System.Drawing.Point(4, 102)
+        Me.dgvSignal.Location = New System.Drawing.Point(4, 145)
         Me.dgvSignal.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.dgvSignal.Name = "dgvSignal"
         Me.dgvSignal.RowTemplate.Height = 24
         Me.dgvSignal.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvSignal.Size = New System.Drawing.Size(1237, 551)
+        Me.dgvSignal.Size = New System.Drawing.Size(1237, 508)
         Me.dgvSignal.TabIndex = 21
         '
         'opnFile
         '
+        '
+        'lblDescription
+        '
+        Me.lblDescription.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.lblDescription.Location = New System.Drawing.Point(5, 103)
+        Me.lblDescription.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDescription.Name = "lblDescription"
+        Me.lblDescription.Size = New System.Drawing.Size(1236, 40)
+        Me.lblDescription.TabIndex = 25
+        Me.lblDescription.Text = "Description ....."
         '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1244, 690)
+        Me.Controls.Add(Me.lblDescription)
         Me.Controls.Add(Me.btnExport)
         Me.Controls.Add(Me.lblProgress)
         Me.Controls.Add(Me.Panel1)
@@ -312,7 +323,6 @@ Partial Class frmMain
         Me.Panel1.PerformLayout()
         CType(Me.dgvSignal, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
 
@@ -340,4 +350,5 @@ Partial Class frmMain
     Friend WithEvents Label1 As Label
     Friend WithEvents btnBrowse As Button
     Friend WithEvents opnFile As OpenFileDialog
+    Friend WithEvents lblDescription As Label
 End Class
