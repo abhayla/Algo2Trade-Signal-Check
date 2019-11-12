@@ -244,6 +244,7 @@ Public Class frmMain
     End Sub
 
     Private Async Sub btnView_Click(sender As Object, e As EventArgs) Handles btnView.Click
+        SetDatagridBindDatatable_ThreadSafe(dgvSignal, Nothing)
         SetObjectEnableDisable_ThreadSafe(btnView, False)
         SetObjectEnableDisable_ThreadSafe(btnCancel, True)
         SetObjectEnableDisable_ThreadSafe(btnExport, False)
@@ -338,7 +339,7 @@ Public Class frmMain
         Catch ex As Exception
             MsgBox(String.Format("Error: {0}", ex.ToString), MsgBoxStyle.Critical)
         Finally
-            SetLabelText_ThreadSafe(lblProgress, "Process Complete")
+            SetLabelText_ThreadSafe(lblProgress, String.Format("Process Complete. Number of records: {0}", dgvSignal.Rows.Count))
             SetObjectEnableDisable_ThreadSafe(btnView, True)
             SetObjectEnableDisable_ThreadSafe(btnCancel, False)
             SetObjectEnableDisable_ThreadSafe(btnExport, True)

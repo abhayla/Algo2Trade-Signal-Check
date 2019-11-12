@@ -87,18 +87,20 @@ Public Class LowSLCandle
                             Dim buffer As Decimal = CalculateBuffer(currentDayPayload.FirstOrDefault.Value.Open, Utilities.Numbers.NumberManipulation.RoundOfType.Floor)
                             For Each runningPayload In currentDayPayload.Keys
                                 _canceller.Token.ThrowIfCancellationRequested()
-                                If currentDayPayload(runningPayload).Volume >= currentDayPayload(runningPayload).PreviousCandlePayload.Volume * 90 / 100 Then
-                                    If currentDayPayload(runningPayload).CandleRange > ATRPayload(runningPayload) * _ATRMultiplier Then
-                                        Dim pl As Decimal = CalculatePL(currentDayPayload(runningPayload).TradingSymbol, currentDayPayload(runningPayload).High + buffer, currentDayPayload(runningPayload).Low - buffer, quantity, lotSize)
-                                        If pl >= _MaxSLAmount Then
-                                            Dim row As DataRow = ret.NewRow
-                                            row("Date") = runningPayload
-                                            row("Instrument") = currentDayPayload(runningPayload).TradingSymbol
-                                            row("Candle Range") = currentDayPayload(runningPayload).CandleRange
-                                            row("ATR") = Math.Round(ATRPayload(runningPayload), 2)
-                                            row("Quantity") = quantity
-                                            row("Stoploss") = pl
-                                            ret.Rows.Add(row)
+                                If currentDayPayload(runningPayload).CandleRange >= buffer Then
+                                    If currentDayPayload(runningPayload).Volume >= currentDayPayload(runningPayload).PreviousCandlePayload.Volume * 90 / 100 Then
+                                        If currentDayPayload(runningPayload).CandleRange > ATRPayload(runningPayload) * _ATRMultiplier Then
+                                            Dim pl As Decimal = CalculatePL(currentDayPayload(runningPayload).TradingSymbol, currentDayPayload(runningPayload).High + buffer, currentDayPayload(runningPayload).Low - buffer, quantity, lotSize)
+                                            If pl >= _MaxSLAmount Then
+                                                Dim row As DataRow = ret.NewRow
+                                                row("Date") = runningPayload
+                                                row("Instrument") = currentDayPayload(runningPayload).TradingSymbol
+                                                row("Candle Range") = currentDayPayload(runningPayload).CandleRange
+                                                row("ATR") = Math.Round(ATRPayload(runningPayload), 2)
+                                                row("Quantity") = quantity
+                                                row("Stoploss") = pl
+                                                ret.Rows.Add(row)
+                                            End If
                                         End If
                                     End If
                                 End If
