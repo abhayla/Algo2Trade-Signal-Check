@@ -74,11 +74,14 @@ Public Class DoubleInsideBar
                         Next
 
                         'Main Logic
+                        Dim ATRPayload As Dictionary(Of Date, Decimal) = Nothing
+                        Indicator.ATR.CalculateATR(14, inputPayload, ATRPayload)
                         If currentDayPayload IsNot Nothing AndAlso currentDayPayload.Count > 0 Then
                             For Each runningPayload In currentDayPayload.Values
                                 _canceller.Token.ThrowIfCancellationRequested()
                                 If runningPayload.PreviousCandlePayload.PreviousCandlePayload.PayloadDate.Date = runningPayload.PayloadDate.Date Then
-                                    If IsInsideBar(runningPayload, runningPayload.PreviousCandlePayload.PreviousCandlePayload) AndAlso
+                                    If runningPayload.PreviousCandlePayload.PreviousCandlePayload.CandleRange < ATRPayload(runningPayload.PreviousCandlePayload.PreviousCandlePayload.PayloadDate) AndAlso
+                                        IsInsideBar(runningPayload, runningPayload.PreviousCandlePayload.PreviousCandlePayload) AndAlso
                                         IsInsideBar(runningPayload.PreviousCandlePayload, runningPayload.PreviousCandlePayload.PreviousCandlePayload) Then
                                         Dim niftyPayload As Payload = niftyIntradayPayload(runningPayload.PayloadDate)
                                         Dim previousDayPayload As Payload = niftyEODPayload.LastOrDefault.Value.PreviousCandlePayload
