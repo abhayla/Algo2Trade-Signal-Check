@@ -102,7 +102,7 @@ Public Class DoubleInsideBar
     Private Function IsInsideBar(ByVal candle As Payload, ByVal mainCandle As Payload) As Boolean
         Dim ret As Boolean = False
         If candle IsNot Nothing AndAlso mainCandle IsNot Nothing Then
-            If candle.High < mainCandle.High AndAlso candle.Low > mainCandle.Low Then
+            If candle.High <= mainCandle.High AndAlso candle.Low >= mainCandle.Low Then
                 ret = True
             End If
         End If
