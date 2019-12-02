@@ -105,6 +105,7 @@
     <Compile Include="StrategyRules\DailyStrongHKOppositeVolume.vb" />
     <Compile Include="StrategyRules\DayHighLow.vb" />
     <Compile Include="StrategyRules\DonchianBreakoutShortTrend.vb" />
+    <Compile Include="StrategyRules\DoubleInsideBar.vb" />
     <Compile Include="StrategyRules\DoubleVolumeEOD.vb" />
     <Compile Include="StrategyRules\EODSignal.vb" />
     <Compile Include="StrategyRules\FractalBreakoutShortTrend.vb" />

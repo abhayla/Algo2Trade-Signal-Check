@@ -327,6 +327,8 @@ Public Class frmMain
                     rule = New InsideBarHighLow(_canceller, category, timeFrame, useHA, instrumentName, filePath)
                 Case 24
                     rule = New ReversaHHLLBreakout(_canceller, category, timeFrame, useHA, instrumentName, filePath)
+                Case 25
+                    rule = New DoubleInsideBar(_canceller, category, timeFrame, useHA, instrumentName, filePath)
             End Select
             AddHandler rule.Heartbeat, AddressOf OnHeartbeat
             AddHandler rule.WaitingFor, AddressOf OnWaitingFor
