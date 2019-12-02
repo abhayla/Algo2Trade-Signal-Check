@@ -85,7 +85,7 @@ Public Class DoubleInsideBar
                                         Dim row As DataRow = ret.NewRow
                                         row("Date") = runningPayload.PayloadDate
                                         row("Instrument") = runningPayload.TradingSymbol
-                                        row("Nifty Change %") = Math.Round(((runningPayload.Close - previousDayPayload.Close) / previousDayPayload.Close) * 100, 4)
+                                        row("Nifty Change %") = Math.Round(((niftyPayload.Close - previousDayPayload.Close) / previousDayPayload.Close) * 100, 4)
                                         ret.Rows.Add(row)
                                     End If
                                 End If
