@@ -329,6 +329,8 @@ Public Class frmMain
                     rule = New ReversaHHLLBreakout(_canceller, category, timeFrame, useHA, instrumentName, filePath)
                 Case 25
                     rule = New DoubleInsideBar(_canceller, category, timeFrame, useHA, instrumentName, filePath)
+                Case 26
+                    rule = New HighLowSupportResistance(_canceller, category, timeFrame, useHA, instrumentName, filePath)
             End Select
             AddHandler rule.Heartbeat, AddressOf OnHeartbeat
             AddHandler rule.WaitingFor, AddressOf OnWaitingFor
@@ -402,6 +404,8 @@ Public Class frmMain
                 lblDescription.Text = String.Format("Previous two candles form HH-HL and current candle breaks lowest Low of previous two candle and vice versa")
             Case 25
                 lblDescription.Text = String.Format("Description ...")
+            Case 26
+                lblDescription.Text = String.Format("Top High/Low matching candles")
             Case Else
                 Throw New NotImplementedException
         End Select

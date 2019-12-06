@@ -81,7 +81,7 @@ Partial Class frmMain
         'btnCancel
         '
         Me.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnCancel.Location = New System.Drawing.Point(1125, 49)
+        Me.btnCancel.Location = New System.Drawing.Point(1125, 44)
         Me.btnCancel.Margin = New System.Windows.Forms.Padding(4)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(100, 28)
@@ -146,7 +146,7 @@ Partial Class frmMain
         'btnView
         '
         Me.btnView.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnView.Location = New System.Drawing.Point(1125, 12)
+        Me.btnView.Location = New System.Drawing.Point(1125, 7)
         Me.btnView.Margin = New System.Windows.Forms.Padding(4)
         Me.btnView.Name = "btnView"
         Me.btnView.Size = New System.Drawing.Size(100, 28)
@@ -156,7 +156,6 @@ Partial Class frmMain
         '
         'txtInstrumentName
         '
-        Me.txtInstrumentName.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtInstrumentName.Location = New System.Drawing.Point(518, 52)
         Me.txtInstrumentName.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtInstrumentName.Name = "txtInstrumentName"
@@ -195,7 +194,7 @@ Partial Class frmMain
         'cmbRule
         '
         Me.cmbRule.FormattingEnabled = True
-        Me.cmbRule.Items.AddRange(New Object() {"Stall Pattern", "Piercing And Dark Cloud", "One Sided Volume", "Constriction At Breakout", "HK Trend Opposing By Volume", "HK Temporary Pause", "HK Reversal", "Get Raw Candle", "Daily Strong HK Opposite Color Volume", "Fractal Cut 2 MA", "Volume Index", "EOD Signal", "Pin Bar Formation", "Bollinger With ATR Bands", "Low Loss High Gain VWAP", "Double Volume EOD", "Fractal Breakout Short Trend", "Donchian Breakout Short Trend", "Pinocchio Bar Formation", "Market Open HA Breakout Screener", "Volume With Candle Range", "DayHighLow", "Low SL Candle", "Inside Bar High Low", "Reversal HHLL Breakout", "Double Inside Bar"})
+        Me.cmbRule.Items.AddRange(New Object() {"Stall Pattern", "Piercing And Dark Cloud", "One Sided Volume", "Constriction At Breakout", "HK Trend Opposing By Volume", "HK Temporary Pause", "HK Reversal", "Get Raw Candle", "Daily Strong HK Opposite Color Volume", "Fractal Cut 2 MA", "Volume Index", "EOD Signal", "Pin Bar Formation", "Bollinger With ATR Bands", "Low Loss High Gain VWAP", "Double Volume EOD", "Fractal Breakout Short Trend", "Donchian Breakout Short Trend", "Pinocchio Bar Formation", "Market Open HA Breakout Screener", "Volume With Candle Range", "DayHighLow", "Low SL Candle", "Inside Bar High Low", "Reversal HHLL Breakout", "Double Inside Bar", "High Low Support Resistance"})
         Me.cmbRule.Location = New System.Drawing.Point(108, 7)
         Me.cmbRule.Margin = New System.Windows.Forms.Padding(4)
         Me.cmbRule.Name = "cmbRule"
@@ -247,7 +246,7 @@ Partial Class frmMain
         Me.Panel1.Location = New System.Drawing.Point(4, 4)
         Me.Panel1.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(1237, 94)
+        Me.Panel1.Size = New System.Drawing.Size(1237, 84)
         Me.Panel1.TabIndex = 22
         '
         'btnBrowse
@@ -261,7 +260,6 @@ Partial Class frmMain
         '
         'txtFilePath
         '
-        Me.txtFilePath.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFilePath.Location = New System.Drawing.Point(799, 52)
         Me.txtFilePath.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtFilePath.Name = "txtFilePath"
@@ -296,11 +294,10 @@ Partial Class frmMain
         '
         'lblDescription
         '
-        Me.lblDescription.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.lblDescription.Location = New System.Drawing.Point(5, 103)
+        Me.lblDescription.Location = New System.Drawing.Point(5, 90)
         Me.lblDescription.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDescription.Name = "lblDescription"
-        Me.lblDescription.Size = New System.Drawing.Size(1236, 40)
+        Me.lblDescription.Size = New System.Drawing.Size(1236, 53)
         Me.lblDescription.TabIndex = 25
         Me.lblDescription.Text = "Description ....."
         '

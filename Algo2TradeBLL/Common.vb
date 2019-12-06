@@ -49,6 +49,7 @@ Public Class Common
         EOD_Commodity
         EOD_Currency
         EOD_Futures
+        EOD_POSITIONAL
     End Enum
 #End Region
 
@@ -400,6 +401,7 @@ Public Class Common
         Dim connectionString As String = Nothing
         _cts.Token.ThrowIfCancellationRequested()
         Dim currentTradingSymbol As String = GetCurrentTradingSymbol(tableName, endDate, rawInstrumentName)
+        If tableName = DataBaseTable.EOD_POSITIONAL Then currentTradingSymbol = rawInstrumentName
         _cts.Token.ThrowIfCancellationRequested()
         Select Case tableName
             Case DataBaseTable.Intraday_Cash
@@ -418,6 +420,8 @@ Public Class Common
                 connectionString = String.Format("SELECT `Open`,`Low`,`High`,`Close`,`Volume`,`SnapshotDate`,`TradingSymbol` FROM `eod_prices_commodity` WHERE `TradingSymbol`=@trd AND `SnapshotDate`<='{0}' AND `SnapshotDate`>='{1}'", endDate.ToString("yyyy-MM-dd"), startDate.ToString("yyyy-MM-dd"))
             Case DataBaseTable.EOD_Futures
                 connectionString = String.Format("SELECT `Open`,`Low`,`High`,`Close`,`Volume`,`SnapshotDate`,`TradingSymbol` FROM `eod_prices_futures` WHERE `TradingSymbol`=@trd AND `SnapshotDate`<='{0}' AND `SnapshotDate`>='{1}'", endDate.ToString("yyyy-MM-dd"), startDate.ToString("yyyy-MM-dd"))
+            Case DataBaseTable.EOD_POSITIONAL
+                connectionString = String.Format("SELECT `Open`,`Low`,`High`,`Close`,`Volume`,`SnapshotDate`,`TradingSymbol` FROM `eod_positional_data` WHERE `TradingSymbol`=@trd AND `SnapshotDate`<='{0}' AND `SnapshotDate`>='{1}'", endDate.ToString("yyyy-MM-dd"), startDate.ToString("yyyy-MM-dd"))
         End Select
         cm = New MySqlCommand(connectionString, conn)
 
@@ -462,6 +466,8 @@ Public Class Common
                 cm = New MySqlCommand("SELECT `Open`,`Low`,`High`,`Close`,`Volume`,`SnapshotDate`,`TradingSymbol` FROM `eod_prices_commodity` WHERE `TradingSymbol`=@trd AND `SnapshotDate`<=@ed AND `SnapshotDate`>=@sd", conn)
             Case DataBaseTable.EOD_Futures
                 cm = New MySqlCommand("SELECT `Open`,`Low`,`High`,`Close`,`Volume`,`SnapshotDate`,`TradingSymbol` FROM `eod_prices_futures` WHERE `TradingSymbol`=@trd AND `SnapshotDate`<=@ed AND `SnapshotDate`>=@sd", conn)
+            Case DataBaseTable.EOD_POSITIONAL
+                cm = New MySqlCommand("SELECT `Open`,`Low`,`High`,`Close`,`Volume`,`SnapshotDate`,`TradingSymbol` FROM `eod_positional_data` WHERE `TradingSymbol`=@trd AND `SnapshotDate`<=@ed AND `SnapshotDate`>=@sd", conn)
         End Select
 
         _cts.Token.ThrowIfCancellationRequested()
@@ -574,8 +580,8 @@ Public Class Common
         Dim activeInstruments As List(Of ActiveInstrumentData) = Nothing
 
         Select Case tableName
-            Case DataBaseTable.Intraday_Cash, DataBaseTable.EOD_Cash
-                cm = New MySqlCommand("SELECT DISTINCT(`INSTRUMENT_TOKEN`),`TRADING_SYMBOL`,`EXPIRY` FROM `active_instruments_cash` WHERE `TRADING_SYMBOL` = @trd AND `AS_ON_DATE`=@sd", conn)
+            Case DataBaseTable.Intraday_Cash, DataBaseTable.EOD_Cash, DataBaseTable.EOD_POSITIONAL
+                cm = New MySqlCommand("SELECT DISTINCT(`INSTRUMENT_TOKEN`),`TRADING_SYMBOL`,`EXPIRY` FROM `active_instruments_cash` WHERE `TRADING_SYMBOL` = @trd AND `AS_ON_DATE`<=@sd", conn)
                 cm.Parameters.AddWithValue("@trd", String.Format("{0}", rawInstrumentName))
             Case DataBaseTable.Intraday_Currency, DataBaseTable.EOD_Currency
                 cm = New MySqlCommand("SELECT `INSTRUMENT_TOKEN`,`TRADING_SYMBOL`,`EXPIRY` FROM `active_instruments_currency` WHERE `TRADING_SYMBOL` LIKE @trd AND `AS_ON_DATE`=@sd", conn)

@@ -111,6 +111,7 @@
     <Compile Include="StrategyRules\FractalBreakoutShortTrend.vb" />
     <Compile Include="StrategyRules\FractalCut2MA.vb" />
     <Compile Include="StrategyRules\GetRawCandle.vb" />
+    <Compile Include="StrategyRules\HighLowSupportResistance.vb" />
     <Compile Include="StrategyRules\HKReversal.vb" />
     <Compile Include="StrategyRules\HKTemporaryPause.vb" />
     <Compile Include="StrategyRules\HKTrendOpposingByVolume.vb" />
