@@ -88,10 +88,12 @@ Public Class HighLowSupportResistance
                                 Dim lowCounter As Integer = 0
                                 For Each subPayload In currentDayPayload.Values
                                     _canceller.Token.ThrowIfCancellationRequested()
-                                    If subPayload.High >= runningPayload.High - highBuffer AndAlso subPayload.High <= runningPayload.High + highBuffer Then
+                                    If (subPayload.High >= runningPayload.High - highBuffer AndAlso subPayload.High <= runningPayload.High + highBuffer) OrElse
+                                        (subPayload.Low >= runningPayload.High - highBuffer AndAlso subPayload.Low <= runningPayload.High + highBuffer) Then
                                         highCounter += 1
                                     End If
-                                    If subPayload.Low >= runningPayload.Low - lowBuffer AndAlso subPayload.Low <= runningPayload.Low + lowBuffer Then
+                                    If (subPayload.Low >= runningPayload.Low - lowBuffer AndAlso subPayload.Low <= runningPayload.Low + lowBuffer) OrElse
+                                        (subPayload.High >= runningPayload.Low - lowBuffer AndAlso subPayload.High <= runningPayload.Low + lowBuffer) Then
                                         lowCounter += 1
                                     End If
                                 Next
@@ -103,40 +105,48 @@ Public Class HighLowSupportResistance
 
                             If highMatchingCandles IsNot Nothing AndAlso highMatchingCandles.Count > 0 Then
                                 Dim counter As Integer = 0
+                                Dim lastHigh As Decimal = Decimal.MinValue
                                 For Each runningCandle In highMatchingCandles.OrderByDescending(Function(x)
                                                                                                     Return x.Value
                                                                                                 End Function)
                                     Dim high As Decimal = currentDayPayload(runningCandle.Key).High
-                                    Dim buffer As Decimal = CalculateBuffer(high, Utilities.Numbers.NumberManipulation.RoundOfType.Floor)
-                                    Dim row As DataRow = ret.NewRow
-                                    row("Date") = runningCandle.Key
-                                    row("Instrument") = currentDayPayload(runningCandle.Key).TradingSymbol
-                                    row("Parameter") = "High"
-                                    row("Parameter Value") = high
-                                    row("Parameter Range") = String.Format("{0} - {1}", high + buffer, high - buffer)
-                                    row("Match Count") = runningCandle.Value
-                                    ret.Rows.Add(row)
-                                    counter += 1
-                                    If counter = _numberOfRecord Then Exit For
+                                    If high <> lastHigh Then
+                                        lastHigh = high
+                                        Dim buffer As Decimal = CalculateBuffer(high, Utilities.Numbers.NumberManipulation.RoundOfType.Floor)
+                                        Dim row As DataRow = ret.NewRow
+                                        row("Date") = runningCandle.Key
+                                        row("Instrument") = currentDayPayload(runningCandle.Key).TradingSymbol
+                                        row("Parameter") = "High"
+                                        row("Parameter Value") = high
+                                        row("Parameter Range") = String.Format("{0} - {1}", high + buffer, high - buffer)
+                                        row("Match Count") = runningCandle.Value
+                                        ret.Rows.Add(row)
+                                        counter += 1
+                                        If counter = _numberOfRecord Then Exit For
+                                    End If
                                 Next
                             End If
                             If lowMatchingCandles IsNot Nothing AndAlso lowMatchingCandles.Count > 0 Then
                                 Dim counter As Integer = 0
+                                Dim lastLow As Decimal = Decimal.MinValue
                                 For Each runningCandle In lowMatchingCandles.OrderByDescending(Function(x)
                                                                                                    Return x.Value
                                                                                                End Function)
                                     Dim low As Decimal = currentDayPayload(runningCandle.Key).Low
-                                    Dim buffer As Decimal = CalculateBuffer(low, Utilities.Numbers.NumberManipulation.RoundOfType.Floor)
-                                    Dim row As DataRow = ret.NewRow
-                                    row("Date") = runningCandle.Key
-                                    row("Instrument") = currentDayPayload(runningCandle.Key).TradingSymbol
-                                    row("Parameter") = "Low"
-                                    row("Parameter Value") = low
-                                    row("Parameter Range") = String.Format("{0} - {1}", low + buffer, low - buffer)
-                                    row("Match Count") = runningCandle.Value
-                                    ret.Rows.Add(row)
-                                    counter += 1
-                                    If counter = _numberOfRecord Then Exit For
+                                    If lastLow <> low Then
+                                        lastLow = low
+                                        Dim buffer As Decimal = CalculateBuffer(low, Utilities.Numbers.NumberManipulation.RoundOfType.Floor)
+                                        Dim row As DataRow = ret.NewRow
+                                        row("Date") = runningCandle.Key
+                                        row("Instrument") = currentDayPayload(runningCandle.Key).TradingSymbol
+                                        row("Parameter") = "Low"
+                                        row("Parameter Value") = low
+                                        row("Parameter Range") = String.Format("{0} - {1}", low + buffer, low - buffer)
+                                        row("Match Count") = runningCandle.Value
+                                        ret.Rows.Add(row)
+                                        counter += 1
+                                        If counter = _numberOfRecord Then Exit For
+                                    End If
                                 Next
                             End If
                         End If

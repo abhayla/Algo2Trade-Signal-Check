@@ -277,6 +277,8 @@ Partial Class frmMain
         '
         'dgvSignal
         '
+        Me.dgvSignal.AllowUserToAddRows = False
+        Me.dgvSignal.AllowUserToDeleteRows = False
         Me.dgvSignal.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -284,6 +286,7 @@ Partial Class frmMain
         Me.dgvSignal.Location = New System.Drawing.Point(4, 145)
         Me.dgvSignal.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.dgvSignal.Name = "dgvSignal"
+        Me.dgvSignal.ReadOnly = True
         Me.dgvSignal.RowTemplate.Height = 24
         Me.dgvSignal.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvSignal.Size = New System.Drawing.Size(1237, 508)
