@@ -147,14 +147,4 @@ Public Class HighLowSupportResistance
         End While
         Return ret
     End Function
-
-    Private Function IsInsideBar(ByVal candle As Payload) As Boolean
-        Dim ret As Boolean = False
-        If candle IsNot Nothing AndAlso candle.PreviousCandlePayload IsNot Nothing Then
-            If candle.High <= candle.PreviousCandlePayload.High AndAlso candle.Low >= candle.PreviousCandlePayload.Low Then
-                ret = True
-            End If
-        End If
-        Return ret
-    End Function
 End Class
