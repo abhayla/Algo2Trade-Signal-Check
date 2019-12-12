@@ -419,7 +419,7 @@ Public Class Payload
     End Class
 
     Public Overrides Function ToString() As String
-        Return String.Format("Trading Symbol:{0}, Open:{1}, Low:{2}, High:{3}, Close{4}, Date:{5}", Me.TradingSymbol, Me.Open, Me.Low, Me.High, Me.Close, Me.PayloadDate)
+        Return String.Format("Trading Symbol:{0}, Open:{1}, High:{2}, Low:{3}, Close{4}, Date:{5}", Me.TradingSymbol, Me.Open, Me.High, Me.Low, Me.Close, Me.PayloadDate)
     End Function
 #Region "IDisposable Support"
     Private disposedValue As Boolean ' To detect redundant calls

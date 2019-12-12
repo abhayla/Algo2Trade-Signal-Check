@@ -49,7 +49,8 @@ Public Class ReversaHHLLBreakout
                     If stockPayload IsNot Nothing AndAlso stockPayload.Count > 0 Then
                         Dim XMinutePayload As Dictionary(Of Date, Payload) = Nothing
                         If _timeFrame > 1 Then
-                            XMinutePayload = Common.ConvertPayloadsToXMinutes(stockPayload, _timeFrame)
+                            Dim exchangeStartTime As Date = New Date(chkDate.Year, chkDate.Month, chkDate.Day, 9, 15, 0)
+                            XMinutePayload = Common.ConvertPayloadsToXMinutes(stockPayload, _timeFrame, exchangeStartTime)
                         Else
                             XMinutePayload = stockPayload
                         End If
