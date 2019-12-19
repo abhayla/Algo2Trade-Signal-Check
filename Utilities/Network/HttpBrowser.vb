@@ -108,7 +108,7 @@ Namespace Network
         Public Property Accept As String = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
         Public Property AcceptLanguage = "en-US,en;q=0.8"
         Public Property AcceptEncoding = "gzip, deflate, sdch"
-        Public Property UserAgent As String = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"
+        Public Property UserAgent As String = "Mozilla/5.0 (Windows NT 10.0; Trident/7.0; rv:11.0) like Gecko"
         Public Property KeepAlive As Boolean = False
         Public Property FormPostContentType As String = "application/x-www-form-urlencoded"
         Public Property MaxReTries As Integer = 20
@@ -155,19 +155,62 @@ Namespace Network
 
         Public Sub AddHeaders(ByVal request As HttpRequestMessage, ByVal referalURL As String, ByVal useRandomUserAgent As Boolean, ByVal headers As Dictionary(Of String, String))
             logger.Debug("Adding headers")
+
+            'request.Headers.TryAddWithoutValidation("Host", "www.nseindia.com")
+            'request.Headers.TryAddWithoutValidation("Connection", "Keep-Alive")
+            'request.KeepAlive = True
+            'request.Headers.TryAddWithoutValidation("Upgrade-Insecure-Requests", "1")
+            'request.Headers.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3")
+            'request.Headers.TryAddWithoutValidation("Sec-Fetch-Mode", "navigate")
+            'request.Headers.TryAddWithoutValidation("Sec-Fetch-Site", "none")
+
+            'request.Headers.TryAddWithoutValidation("Accept-Encoding", "gzip, deflate")
+            'request.Headers.TryAddWithoutValidation("Accept-Language", "en-US,en;q=0.9")
+
+            'request.ContentType = "application/x-www-form-urlencoded"
+            'request.Referer = "https://www.google.com/"
+            'request.Headers.TryAddWithoutValidation("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Trident/7.0; rv:11.0) like Gecko")
+
+            'headers = New Dictionary(Of String, String)
+            'headers.Add("Host", "www.nseindia.com")
+            'headers.Add("Upgrade-Insecure-Requests", "1")
+            'headers.Add("Sec-Fetch-Mode", "navigate")
+            'headers.Add("Sec-Fetch-Site", "none")
+
             If headers IsNot Nothing Then
                 For Each item In headers
                     request.Headers.TryAddWithoutValidation(item.Key, item.Value)
                 Next
-            Else
-                request.Headers.TryAddWithoutValidation("Accept", Accept)
-                request.Headers.TryAddWithoutValidation("Accept-Encoding", AcceptEncoding)
-                request.Headers.TryAddWithoutValidation("Accept-Language", AcceptLanguage)
-                request.Headers.TryAddWithoutValidation("Content-Type", FormPostContentType)
-                If referalURL IsNot Nothing Then request.Headers.TryAddWithoutValidation("Referer", referalURL)
             End If
 
             Dim dummy As IEnumerable(Of String) = Nothing
+
+            request.Headers.TryGetValues("Accept", dummy)
+            If dummy Is Nothing OrElse dummy.FirstOrDefault Is Nothing Then
+                request.Headers.TryAddWithoutValidation("Accept", Accept)
+            End If
+
+            dummy = Nothing
+            request.Headers.TryGetValues("Accept-Encoding", dummy)
+            If dummy Is Nothing OrElse dummy.FirstOrDefault Is Nothing Then
+                request.Headers.TryAddWithoutValidation("Accept-Encoding", AcceptEncoding)
+            End If
+
+            dummy = Nothing
+            request.Headers.TryGetValues("Accept-Language", dummy)
+            If dummy Is Nothing OrElse dummy.FirstOrDefault Is Nothing Then
+                request.Headers.TryAddWithoutValidation("Accept-Language", AcceptLanguage)
+            End If
+
+            dummy = Nothing
+            request.Headers.TryGetValues("Content-Type", dummy)
+            If dummy Is Nothing OrElse dummy.FirstOrDefault Is Nothing Then
+                request.Headers.TryAddWithoutValidation("Content-Type", FormPostContentType)
+            End If
+
+            If referalURL IsNot Nothing Then request.Headers.TryAddWithoutValidation("Referer", referalURL)
+
+            dummy = Nothing
             request.Headers.TryGetValues("User-Agent", dummy)
 
             If dummy Is Nothing OrElse dummy.FirstOrDefault Is Nothing Then
