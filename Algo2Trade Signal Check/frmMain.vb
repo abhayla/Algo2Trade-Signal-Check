@@ -331,6 +331,8 @@ Public Class frmMain
                     rule = New DoubleInsideBar(_canceller, category, timeFrame, useHA, instrumentName, filePath)
                 Case 26
                     rule = New HighLowSupportResistance(_canceller, category, timeFrame, useHA, instrumentName, filePath)
+                Case 27
+                    rule = New OHL(_canceller, category, timeFrame, useHA, instrumentName, filePath)
             End Select
             AddHandler rule.Heartbeat, AddressOf OnHeartbeat
             AddHandler rule.WaitingFor, AddressOf OnWaitingFor
@@ -406,6 +408,8 @@ Public Class frmMain
                 lblDescription.Text = String.Format("Description ...")
             Case 26
                 lblDescription.Text = String.Format("Top High/Low matching candles")
+            Case 27
+                lblDescription.Text = String.Format("Description ...")
             Case Else
                 Throw New NotImplementedException
         End Select

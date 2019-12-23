@@ -119,6 +119,7 @@
     <Compile Include="StrategyRules\LowLossHighGainVWAP.vb" />
     <Compile Include="StrategyRules\LowSLCandle.vb" />
     <Compile Include="StrategyRules\MarketOpenHABreakoutScreener.vb" />
+    <Compile Include="StrategyRules\OHL.vb" />
     <Compile Include="StrategyRules\OneSidedVolume.vb" />
     <Compile Include="StrategyRules\PiercingAndDarkCloud.vb" />
     <Compile Include="StrategyRules\PinBarFormation.vb" />
