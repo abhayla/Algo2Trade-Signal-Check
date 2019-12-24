@@ -82,7 +82,7 @@ Public Class SpotFutureArbritrage
                                             Dim row As DataRow = ret.NewRow
                                             row("Date") = inputPayload(runningPayload).PayloadDate
                                             row("Trading Symbol") = inputPayload(runningPayload).TradingSymbol
-                                            row("Diff %") = diffPer
+                                            row("Diff %") = Math.Round(diffPer, 4)
 
                                             ret.Rows.Add(row)
                                         End If
