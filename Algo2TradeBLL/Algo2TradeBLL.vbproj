@@ -89,6 +89,7 @@
     <Compile Include="Indicators\DonchianChannel.vb" />
     <Compile Include="Indicators\EMA.vb" />
     <Compile Include="Indicators\FractalBands.vb" />
+    <Compile Include="Indicators\FractalBandsTrendLine.vb" />
     <Compile Include="Indicators\Gann.vb" />
     <Compile Include="Indicators\HeikenAshi.vb" />
     <Compile Include="Indicators\IchimokuClouds.vb" />
