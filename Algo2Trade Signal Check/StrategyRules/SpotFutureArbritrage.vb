@@ -72,7 +72,7 @@ Public Class SpotFutureArbritrage
 
                         'Main Logic
                         If currentDayPayload IsNot Nothing AndAlso currentDayPayload.Count > 0 Then
-                            Dim supportingPayload As Dictionary(Of Date, Payload) = _cmn.GetRawPayload(Common.DataBaseTable.Intraday_Futures, stock, chkDate, chkDate)
+                            Dim supportingPayload As Dictionary(Of Date, Payload) = _cmn.GetRawPayload(Common.DataBaseTable.Intraday_Cash, stock, chkDate, chkDate)
                             If supportingPayload IsNot Nothing AndAlso supportingPayload.Count > 0 Then
                                 For Each runningPayload In currentDayPayload.Keys
                                     _canceller.Token.ThrowIfCancellationRequested()
