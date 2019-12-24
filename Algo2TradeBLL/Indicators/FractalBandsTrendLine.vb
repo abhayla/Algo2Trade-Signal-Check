@@ -6,7 +6,7 @@
                 Dim fractalLowPayload As Dictionary(Of Date, Decimal) = Nothing
                 Indicator.FractalBands.CalculateFractal(inputPayload, fractalHighPayload, fractalLowPayload)
                 For Each runningPayload In inputPayload
-                    Dim firstUCandle As Payload = GetFractalUFormingCandle(inputPayload, fractalHighPayload, runningPayload.Key, 1)
+                    Dim firstUCandle As Payload = GetFractalUFormingCandle(inputPayload, fractalLowPayload, runningPayload.Key, -1)
                 Next
             End If
         End Sub
@@ -23,7 +23,7 @@
                     For Each runningPayload In checkingPayload.OrderByDescending(Function(x)
                                                                                      Return x.Key
                                                                                  End Function)
-                        If direction = 1 Then
+                        If direction > 0 Then
                             If firstCandleTime = Date.MinValue Then
                                 firstCandleTime = runningPayload.Key
                             Else
@@ -42,6 +42,25 @@
                                     End If
                                 End If
                             End If
+                        ElseIf direction < 0 Then
+                            If firstCandleTime = Date.MinValue Then
+                                firstCandleTime = runningPayload.Key
+                            Else
+                                If middleCandleTime = Date.MinValue Then
+                                    If fractalPayload(firstCandleTime) <= runningPayload.Value Then
+                                        firstCandleTime = runningPayload.Key
+                                    Else
+                                        middleCandleTime = runningPayload.Key
+                                    End If
+                                Else
+                                    If fractalPayload(middleCandleTime) > runningPayload.Value Then
+                                        middleCandleTime = runningPayload.Key
+                                    ElseIf fractalPayload(middleCandleTime) < runningPayload.Value Then
+                                        lastCandleTime = runningPayload.Key
+                                        Exit For
+                                    End If
+                                End If
+                            End If
                         End If
                     Next
                     If lastCandleTime <> Date.MinValue Then
@@ -49,8 +68,13 @@
                                                                                       Return x.Key
                                                                                   End Function)
                             If runningPayload.Key < lastCandleTime Then
-                                If direction = 1 Then
+                                If direction > 0 Then
                                     If runningPayload.Value.High = fractalPayload(middleCandleTime) Then
+                                        ret = runningPayload.Value
+                                        Exit For
+                                    End If
+                                ElseIf direction < 0 Then
+                                    If runningPayload.Value.Low = fractalPayload(middleCandleTime) Then
                                         ret = runningPayload.Value
                                         Exit For
                                     End If
