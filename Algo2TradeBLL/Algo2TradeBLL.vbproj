@@ -78,6 +78,7 @@
     <Compile Include="Calculator\GlobalVar.vb" />
     <Compile Include="Common.vb" />
     <Compile Include="Entities\Payload.vb" />
+    <Compile Include="Entities\PivotPoints.vb" />
     <Compile Include="Indicators\ADX.vb" />
     <Compile Include="Indicators\Algo2TradeRenko.vb" />
     <Compile Include="Indicators\ATR.vb" />
