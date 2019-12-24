@@ -37,7 +37,7 @@
                                     If fractalPayload(middleCandleTime) < runningPayload.Value Then
                                         middleCandleTime = Date.MinValue
                                         firstCandleTime = runningPayload.Key
-                                    Else
+                                    ElseIf fractalPayload(middleCandleTime) > runningPayload.Value Then
                                         lastCandleTime = runningPayload.Key
                                         Exit For
                                     End If
