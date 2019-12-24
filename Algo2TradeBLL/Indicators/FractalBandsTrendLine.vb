@@ -6,6 +6,9 @@
                 Dim fractalLowPayload As Dictionary(Of Date, Decimal) = Nothing
                 Indicator.FractalBands.CalculateFractal(inputPayload, fractalHighPayload, fractalLowPayload)
                 For Each runningPayload In inputPayload
+                    Dim highLine As TrendLineVeriables = New TrendLineVeriables
+                    Dim lowLine As TrendLineVeriables = New TrendLineVeriables
+
                     Dim lastHighUCandle As Payload = GetFractalUFormingCandle(inputPayload, fractalHighPayload, runningPayload.Key, 1)
                     If lastHighUCandle IsNot Nothing Then
                         Dim firstHighUCandle As Payload = lastHighUCandle
@@ -24,8 +27,44 @@
                             Dim m As Decimal = (y2 - y1) / (x2 - x1)
                             Dim c As Decimal = y1
 
+                            highLine.M = m
+                            highLine.C = c
+                            highLine.X = inputPayload.Where(Function(x)
+                                                                Return x.Key > firstHighUCandle.PayloadDate AndAlso x.Key <= runningPayload.Value.PayloadDate
+                                                            End Function).Count
                         End If
                     End If
+
+                    Dim lastLowUCandle As Payload = GetFractalUFormingCandle(inputPayload, fractalLowPayload, runningPayload.Key, -1)
+                    If lastLowUCandle IsNot Nothing Then
+                        Dim firstLowUCandle As Payload = lastLowUCandle
+                        While firstLowUCandle.Low >= lastLowUCandle.Low
+                            firstLowUCandle = GetFractalUFormingCandle(inputPayload, fractalLowPayload, firstLowUCandle.PayloadDate, -1)
+                            If firstLowUCandle Is Nothing Then Exit While
+                        End While
+                        If firstLowUCandle IsNot Nothing Then
+                            Dim x1 As Decimal = 0
+                            Dim y1 As Decimal = firstLowUCandle.Low
+                            Dim x2 As Decimal = inputPayload.Where(Function(x)
+                                                                       Return x.Key > firstLowUCandle.PayloadDate AndAlso x.Key <= lastLowUCandle.PayloadDate
+                                                                   End Function).Count
+                            Dim y2 As Decimal = lastLowUCandle.Low
+
+                            Dim m As Decimal = (y2 - y1) / (x2 - x1)
+                            Dim c As Decimal = y1
+
+                            lowLine.M = m
+                            lowLine.C = c
+                            lowLine.X = inputPayload.Where(Function(x)
+                                                               Return x.Key > firstLowUCandle.PayloadDate AndAlso x.Key <= runningPayload.Value.PayloadDate
+                                                           End Function).Count
+                        End If
+                    End If
+
+                    If outputHighPayload Is Nothing Then outputHighPayload = New Dictionary(Of Date, TrendLineVeriables)
+                    outputHighPayload.Add(runningPayload.Key, highLine)
+                    If outputLowPayload Is Nothing Then outputLowPayload = New Dictionary(Of Date, TrendLineVeriables)
+                    outputLowPayload.Add(runningPayload.Key, lowLine)
                 Next
             End If
         End Sub
