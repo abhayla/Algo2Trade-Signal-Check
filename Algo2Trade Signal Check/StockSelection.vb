@@ -47,17 +47,17 @@ Public Class StockSelection
                 Dim counter As Integer = 0
                 For i = 1 To dt.Rows.Count - 1
                     Dim rowDate As Date = dt.Rows(i)(0)
-                    If rowDate.Date = tradingDate.Date Then
-                        If ret Is Nothing Then ret = New List(Of String)
-                        Dim tradingSymbol As String = dt.Rows(i).Item(1)
-                        Dim instrumentName As String = Nothing
-                        If tradingSymbol.Contains("FUT") Then
-                            instrumentName = tradingSymbol.Remove(tradingSymbol.Count - 8)
-                        Else
-                            instrumentName = tradingSymbol
-                        End If
-                        ret.Add(instrumentName)
+                    'If rowDate.Date = tradingDate.Date Then
+                    If ret Is Nothing Then ret = New List(Of String)
+                    Dim tradingSymbol As String = dt.Rows(i).Item(1)
+                    Dim instrumentName As String = Nothing
+                    If tradingSymbol.Contains("FUT") Then
+                        instrumentName = tradingSymbol.Remove(tradingSymbol.Count - 8)
+                    Else
+                        instrumentName = tradingSymbol
                     End If
+                    ret.Add(instrumentName)
+                    'End If
                 Next
             End If
         Else

@@ -9,6 +9,7 @@ Public Class SpotFutureArbritrage
         Await Task.Delay(0).ConfigureAwait(False)
         Dim ret As New DataTable
         ret.Columns.Add("Date")
+        ret.Columns.Add("Time")
         ret.Columns.Add("Trading Symbol")
         ret.Columns.Add("Diff %")
 
@@ -80,7 +81,8 @@ Public Class SpotFutureArbritrage
                                         Dim diffPer As Decimal = ((currentDayPayload(runningPayload).Close / supportingPayload(runningPayload).Close) - 1) * 100
                                         If diffPer >= 1 Then
                                             Dim row As DataRow = ret.NewRow
-                                            row("Date") = inputPayload(runningPayload).PayloadDate
+                                            row("Date") = inputPayload(runningPayload).PayloadDate.ToString("dd-MM-yyyy")
+                                            row("Time") = inputPayload(runningPayload).PayloadDate.ToString("HH:mm:ss")
                                             row("Trading Symbol") = inputPayload(runningPayload).TradingSymbol
                                             row("Diff %") = Math.Round(diffPer, 4)
 
