@@ -27,21 +27,20 @@
                             If firstCandleTime = Date.MinValue Then
                                 firstCandleTime = runningPayload.Key
                             Else
-                                If fractalPayload(firstCandleTime) >= runningPayload.Value Then
-                                    firstCandleTime = runningPayload.Key
+                                If middleCandleTime = Date.MinValue Then
+                                    If fractalPayload(firstCandleTime) >= runningPayload.Value Then
+                                        firstCandleTime = runningPayload.Key
+                                    Else
+                                        middleCandleTime = runningPayload.Key
+                                    End If
                                 Else
-                                    middleCandleTime = runningPayload.Key
-                                End If
-                            End If
-                            If middleCandleTime <> Date.MinValue Then
-                                If fractalPayload(middleCandleTime) = runningPayload.Value Then
-                                    middleCandleTime = runningPayload.Key
-                                ElseIf fractalPayload(middleCandleTime) < runningPayload.Value Then
-                                    middleCandleTime = Date.MinValue
-                                    firstCandleTime = runningPayload.Key
-                                Else
-                                    lastCandleTime = runningPayload.Key
-                                    Exit For
+                                    If fractalPayload(middleCandleTime) < runningPayload.Value Then
+                                        middleCandleTime = Date.MinValue
+                                        firstCandleTime = runningPayload.Key
+                                    Else
+                                        lastCandleTime = runningPayload.Key
+                                        Exit For
+                                    End If
                                 End If
                             End If
                         End If
