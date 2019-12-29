@@ -75,7 +75,7 @@ Public Class GetRawCandle
                         Next
 
                         'Main Logic
-                        Indicator.FractalBandsTrendLine.CalculateFractalBandsTrendLine(inputPayload, Nothing, Nothing)
+                        Indicator.SwingHighLowTrendLine.CalculateSwingHighLowTrendLine(inputPayload, Nothing, Nothing)
                         If currentDayPayload IsNot Nothing AndAlso currentDayPayload.Count > 0 Then
                             For Each runningPayload In currentDayPayload.Keys
                                 _canceller.Token.ThrowIfCancellationRequested()
