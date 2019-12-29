@@ -24,14 +24,21 @@
                                                                    End Function).Count
                             Dim y2 As Decimal = lastHighUCandle.High
 
-                            Dim m As Decimal = (y2 - y1) / (x2 - x1)
-                            Dim c As Decimal = y1
-
-                            highLine.M = m
-                            highLine.C = c
-                            highLine.X = inputPayload.Where(Function(x)
-                                                                Return x.Key > firstHighUCandle.PayloadDate AndAlso x.Key <= runningPayload.Value.PayloadDate
-                                                            End Function).Count
+                            Dim trendLine As TrendLineVeriables = Common.GetEquationOfTrendLine(x1, y1, x2, y2)
+                            If trendLine IsNot Nothing Then
+                                highLine.M = trendLine.M
+                                highLine.C = trendLine.C
+                                highLine.X = inputPayload.Where(Function(x)
+                                                                    Return x.Key > firstHighUCandle.PayloadDate AndAlso x.Key <= runningPayload.Value.PayloadDate
+                                                                End Function).Count
+                            End If
+                        Else
+                            Dim previousHighLine As TrendLineVeriables = outputHighPayload(runningPayload.Value.PreviousCandlePayload.PayloadDate)
+                            If previousHighLine.M <> Decimal.MinValue Then
+                                highLine.M = previousHighLine.M
+                                highLine.C = previousHighLine.C
+                                highLine.X = previousHighLine.X + 1
+                            End If
                         End If
                     End If
 
@@ -50,14 +57,21 @@
                                                                    End Function).Count
                             Dim y2 As Decimal = lastLowUCandle.Low
 
-                            Dim m As Decimal = (y2 - y1) / (x2 - x1)
-                            Dim c As Decimal = y1
-
-                            lowLine.M = m
-                            lowLine.C = c
-                            lowLine.X = inputPayload.Where(Function(x)
-                                                               Return x.Key > firstLowUCandle.PayloadDate AndAlso x.Key <= runningPayload.Value.PayloadDate
-                                                           End Function).Count
+                            Dim trendLine As TrendLineVeriables = Common.GetEquationOfTrendLine(x1, y1, x2, y2)
+                            If trendLine IsNot Nothing Then
+                                lowLine.M = trendLine.M
+                                lowLine.C = trendLine.C
+                                lowLine.X = inputPayload.Where(Function(x)
+                                                                   Return x.Key > firstLowUCandle.PayloadDate AndAlso x.Key <= runningPayload.Value.PayloadDate
+                                                               End Function).Count
+                            End If
+                        Else
+                            Dim previousLowLine As TrendLineVeriables = outputLowPayload(runningPayload.Value.PreviousCandlePayload.PayloadDate)
+                            If previousLowLine.M <> Decimal.MinValue Then
+                                lowLine.M = previousLowLine.M
+                                lowLine.C = previousLowLine.C
+                                lowLine.X = previousLowLine.X + 1
+                            End If
                         End If
                     End If
 
