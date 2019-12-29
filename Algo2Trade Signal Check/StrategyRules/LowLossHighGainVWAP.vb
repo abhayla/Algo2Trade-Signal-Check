@@ -180,7 +180,7 @@ Public Class LowLossHighGainVWAP
 
     Private Function GetLotSize(ByVal stock As String, ByVal tradingDate As Date) As Integer
         Dim ret As Integer = Nothing
-        Dim statement As String = String.Format("SELECT DISTINCT `LOT_SIZE` FROM `active_instruments_futures` WHERE `INSTRUMENT_NAME`='{0}' AND `AS_ON_DATE`>='{1}' AND `AS_ON_DATE`<='{2}'",
+        Dim statement As String = String.Format("SELECT DISTINCT `LOT_SIZE` FROM `active_instruments_futures` WHERE `INSTRUMENT_NAME`='{0}' AND `SEGMENT`='NFO-FUT' AND `AS_ON_DATE`>='{1}' AND `AS_ON_DATE`<='{2}'",
                                                 stock, tradingDate.AddDays(-30).Date.ToString("yyyy-MM-dd"), tradingDate.Date.ToString("yyyy-MM-dd"))
         Using dbConn As New MySQLDBHelper("DESKTOP-RIO", "local_stock", 3306, "rio", "speech123", _canceller)
             AddHandler dbConn.Heartbeat, AddressOf OnHeartbeat
