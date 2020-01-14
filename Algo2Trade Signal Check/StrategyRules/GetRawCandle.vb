@@ -15,8 +15,6 @@ Public Class GetRawCandle
         ret.Columns.Add("High")
         ret.Columns.Add("Close")
         ret.Columns.Add("Volume")
-        ret.Columns.Add("Swing High")
-        ret.Columns.Add("Swing Low")
 
         Dim stockData As StockSelection = New StockSelection(_canceller, _category, _cmn, _fileName)
         AddHandler stockData.Heartbeat, AddressOf OnHeartbeat
@@ -40,7 +38,7 @@ Public Class GetRawCandle
                     Dim stockPayload As Dictionary(Of Date, Payload) = Nothing
                     Select Case _category
                         Case "Cash"
-                            stockPayload = _cmn.GetRawPayload(Common.DataBaseTable.EOD_POSITIONAL, stock, chkDate.AddDays(-8), chkDate)
+                            stockPayload = _cmn.GetRawPayload(Common.DataBaseTable.Intraday_Cash, stock, chkDate.AddDays(-8), chkDate)
                         Case "Currency"
                             stockPayload = _cmn.GetRawPayload(Common.DataBaseTable.Intraday_Currency, stock, chkDate.AddDays(-8), chkDate)
                         Case "Commodity"
@@ -77,9 +75,6 @@ Public Class GetRawCandle
                         Next
 
                         'Main Logic
-                        Dim swingHighPayload As Dictionary(Of Date, Decimal) = Nothing
-                        Dim swingLowPayload As Dictionary(Of Date, Decimal) = Nothing
-                        Indicator.SwingHighLow.CalculateSwingHighLow(inputPayload, False, swingHighPayload, swingLowPayload)
                         If currentDayPayload IsNot Nothing AndAlso currentDayPayload.Count > 0 Then
                             For Each runningPayload In currentDayPayload.Keys
                                 _canceller.Token.ThrowIfCancellationRequested()
@@ -91,8 +86,6 @@ Public Class GetRawCandle
                                 row("High") = inputPayload(runningPayload).High
                                 row("Close") = inputPayload(runningPayload).Close
                                 row("Volume") = inputPayload(runningPayload).Volume
-                                row("Swing High") = swingHighPayload(runningPayload)
-                                row("Swing Low") = swingLowPayload(runningPayload)
 
                                 ret.Rows.Add(row)
                             Next
