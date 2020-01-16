@@ -337,6 +337,8 @@ Public Class frmMain
                     rule = New SpotFutureArbritrage(_canceller, category, timeFrame, useHA, instrumentName, filePath)
                 Case 29
                     rule = New SwingCandle(_canceller, category, timeFrame, useHA, instrumentName, filePath)
+                Case 30
+                    rule = New SupertrendSMAOpenHighLow(_canceller, category, timeFrame, useHA, instrumentName, filePath)
             End Select
             AddHandler rule.Heartbeat, AddressOf OnHeartbeat
             AddHandler rule.WaitingFor, AddressOf OnWaitingFor
@@ -418,6 +420,8 @@ Public Class frmMain
                 lblDescription.Text = String.Format("Description ...")
             Case 29
                 lblDescription.Text = String.Format("Candle which creates both swing high and low")
+            Case 30
+                lblDescription.Text = String.Format("Daily candle should be above supertrend and 200 MA and for first X minute Open=High and vice versa")
             Case Else
                 Throw New NotImplementedException
         End Select
