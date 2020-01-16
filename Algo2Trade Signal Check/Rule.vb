@@ -24,14 +24,14 @@ Public MustInherit Class Rule
 #End Region
 
     Protected ReadOnly _canceller As CancellationTokenSource
-    Protected ReadOnly _category As String
+    Protected ReadOnly _category As Common.DataBaseTable
     Protected ReadOnly _timeFrame As Integer
     Protected ReadOnly _useHA As Boolean
     Protected ReadOnly _instrumentName As String
     Protected ReadOnly _fileName As String
     Protected ReadOnly _cmn As Common
     Public Sub New(ByVal canceller As CancellationTokenSource,
-                   ByVal stockCategory As String,
+                   ByVal stockCategory As Integer,
                    ByVal timeFrame As Integer,
                    ByVal useHA As Boolean,
                    ByVal stockName As String,

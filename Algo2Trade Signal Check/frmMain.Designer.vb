@@ -91,16 +91,16 @@ Partial Class frmMain
         '
         'nmrcTimeFrame
         '
-        Me.nmrcTimeFrame.Location = New System.Drawing.Point(866, 12)
+        Me.nmrcTimeFrame.Location = New System.Drawing.Point(883, 12)
         Me.nmrcTimeFrame.Margin = New System.Windows.Forms.Padding(4)
         Me.nmrcTimeFrame.Name = "nmrcTimeFrame"
-        Me.nmrcTimeFrame.Size = New System.Drawing.Size(75, 22)
+        Me.nmrcTimeFrame.Size = New System.Drawing.Size(58, 22)
         Me.nmrcTimeFrame.TabIndex = 28
         '
         'lblTimeFrame
         '
         Me.lblTimeFrame.AutoSize = True
-        Me.lblTimeFrame.Location = New System.Drawing.Point(736, 13)
+        Me.lblTimeFrame.Location = New System.Drawing.Point(760, 13)
         Me.lblTimeFrame.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblTimeFrame.Name = "lblTimeFrame"
         Me.lblTimeFrame.Size = New System.Drawing.Size(126, 17)
@@ -175,11 +175,11 @@ Partial Class frmMain
         '
         Me.cmbCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbCategory.FormattingEnabled = True
-        Me.cmbCategory.Items.AddRange(New Object() {"Cash", "Currency", "Commodity", "Future"})
+        Me.cmbCategory.Items.AddRange(New Object() {"Intraday Cash", "Intraday Commodity", "Intraday Currency", "Intraday Futures", "EOD Cash", "EOD Commodity", "EOD Currency", "EOD Futures", "EOD Postional"})
         Me.cmbCategory.Location = New System.Drawing.Point(607, 9)
         Me.cmbCategory.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.cmbCategory.Name = "cmbCategory"
-        Me.cmbCategory.Size = New System.Drawing.Size(121, 24)
+        Me.cmbCategory.Size = New System.Drawing.Size(146, 24)
         Me.cmbCategory.TabIndex = 19
         '
         'lblCategory

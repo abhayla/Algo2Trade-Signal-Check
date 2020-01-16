@@ -2,7 +2,7 @@
 Imports System.Threading
 Public Class PinBarFormation
     Inherits Rule
-    Public Sub New(ByVal canceller As CancellationTokenSource, ByVal stockCategory As String, ByVal timeFrame As Integer, ByVal useHA As Boolean, ByVal stockName As String, ByVal fileName As String)
+    Public Sub New(ByVal canceller As CancellationTokenSource, ByVal stockCategory As Integer, ByVal timeFrame As Integer, ByVal useHA As Boolean, ByVal stockName As String, ByVal fileName As String)
         MyBase.New(canceller, stockCategory, timeFrame, useHA, stockName, fileName)
     End Sub
     Public Overrides Async Function RunAsync(ByVal startDate As Date, ByVal endDate As Date) As Task(Of DataTable)
@@ -32,16 +32,10 @@ Public Class PinBarFormation
                     _canceller.Token.ThrowIfCancellationRequested()
                     Dim stockPayload As Dictionary(Of Date, Payload) = Nothing
                     Select Case _category
-                        Case "Cash"
-                            stockPayload = _cmn.GetRawPayload(Common.DataBaseTable.Intraday_Cash, stock, chkDate.AddDays(-7), chkDate)
-                        Case "Currency"
-                            stockPayload = _cmn.GetRawPayload(Common.DataBaseTable.Intraday_Currency, stock, chkDate.AddDays(-7), chkDate)
-                        Case "Commodity"
-                            stockPayload = _cmn.GetRawPayload(Common.DataBaseTable.Intraday_Commodity, stock, chkDate.AddDays(-7), chkDate)
-                        Case "Future"
-                            stockPayload = _cmn.GetRawPayload(Common.DataBaseTable.Intraday_Futures, stock, chkDate.AddDays(-7), chkDate)
-                        Case Else
-                            Throw New NotImplementedException
+                        Case Common.DataBaseTable.Intraday_Cash, Common.DataBaseTable.Intraday_Commodity, Common.DataBaseTable.Intraday_Currency, Common.DataBaseTable.Intraday_Futures
+                            stockPayload = _cmn.GetRawPayload(_category, stock, chkDate.AddDays(-8), chkDate)
+                        Case Common.DataBaseTable.EOD_Cash, Common.DataBaseTable.EOD_Commodity, Common.DataBaseTable.EOD_Currency, Common.DataBaseTable.EOD_Futures, Common.DataBaseTable.EOD_POSITIONAL
+                            stockPayload = _cmn.GetRawPayload(_category, stock, chkDate.AddDays(-200), chkDate)
                     End Select
                     _canceller.Token.ThrowIfCancellationRequested()
                     If stockPayload IsNot Nothing AndAlso stockPayload.Count > 0 Then

@@ -265,7 +265,7 @@ Public Class frmMain
         Dim startDate As Date = GetDateTimePickerValue_ThreadSafe(dtpckrFromDate)
         Dim endDate As Date = GetDateTimePickerValue_ThreadSafe(dtpckrToDate)
         Dim selectedRule As Integer = GetComboBoxIndex_ThreadSafe(cmbRule)
-        Dim category As String = GetComboBoxItem_ThreadSafe(cmbCategory)
+        Dim category As Integer = GetComboBoxIndex_ThreadSafe(cmbCategory) + 2
         Dim timeFrame As Integer = GetNumericUpDownValue_ThreadSafe(nmrcTimeFrame)
         Dim useHA As Boolean = GetCheckBoxChecked_ThreadSafe(chkbHA)
         Dim instrumentName As String = GetTextBoxText_ThreadSafe(txtInstrumentName)
@@ -416,6 +416,18 @@ Public Class frmMain
                 lblDescription.Text = String.Format("Description ...")
             Case Else
                 Throw New NotImplementedException
+        End Select
+    End Sub
+
+    Private Sub cmbCategory_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbCategory.SelectedIndexChanged
+        Dim index As Integer = GetComboBoxIndex_ThreadSafe(cmbCategory)
+        Select Case index
+            Case 0, 1, 2, 3
+                nmrcTimeFrame.Value = My.Settings.TimeFrame
+                nmrcTimeFrame.Enabled = True
+            Case Else
+                nmrcTimeFrame.Value = 1
+                nmrcTimeFrame.Enabled = False
         End Select
     End Sub
 End Class

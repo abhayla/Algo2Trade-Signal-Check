@@ -2,7 +2,7 @@
 Imports System.Threading
 Public Class SpotFutureArbritrage
     Inherits Rule
-    Public Sub New(ByVal canceller As CancellationTokenSource, ByVal stockCategory As String, ByVal timeFrame As Integer, ByVal useHA As Boolean, ByVal stockName As String, ByVal fileName As String)
+    Public Sub New(ByVal canceller As CancellationTokenSource, ByVal stockCategory As Integer, ByVal timeFrame As Integer, ByVal useHA As Boolean, ByVal stockName As String, ByVal fileName As String)
         MyBase.New(canceller, stockCategory, timeFrame, useHA, stockName, fileName)
     End Sub
     Public Overrides Async Function RunAsync(ByVal startDate As Date, ByVal endDate As Date) As Task(Of DataTable)
