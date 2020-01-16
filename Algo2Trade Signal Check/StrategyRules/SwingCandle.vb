@@ -1,6 +1,7 @@
-﻿Imports Algo2TradeBLL
-Imports System.Threading
-Public Class OHL
+﻿Imports System.Threading
+Imports Algo2TradeBLL
+
+Public Class SwingCandle
     Inherits Rule
     Public Sub New(ByVal canceller As CancellationTokenSource, ByVal stockCategory As Integer, ByVal timeFrame As Integer, ByVal useHA As Boolean, ByVal stockName As String, ByVal fileName As String)
         MyBase.New(canceller, stockCategory, timeFrame, useHA, stockName, fileName)
@@ -9,9 +10,7 @@ Public Class OHL
         Await Task.Delay(0).ConfigureAwait(False)
         Dim ret As New DataTable
         ret.Columns.Add("Date")
-        ret.Columns.Add("Trading Symbol")
-        ret.Columns.Add("O=H")
-        ret.Columns.Add("O=L")
+        ret.Columns.Add("Instrument")
 
         Dim stockData As StockSelection = New StockSelection(_canceller, _category, _cmn, _fileName)
         AddHandler stockData.Heartbeat, AddressOf OnHeartbeat
@@ -64,52 +63,23 @@ Public Class OHL
                                 currentDayPayload.Add(runningPayload, inputPayload(runningPayload))
                             End If
                         Next
-
-                        'Main Logic
+                        'Main logic
+                        Dim swingHighPayload As Dictionary(Of Date, Decimal) = Nothing
+                        Dim swingLowPayload As Dictionary(Of Date, Decimal) = Nothing
+                        Indicator.SwingHighLow.CalculateSwingHighLow(inputPayload, True, swingHighPayload, swingLowPayload)
                         If currentDayPayload IsNot Nothing AndAlso currentDayPayload.Count > 0 Then
-                            _canceller.Token.ThrowIfCancellationRequested()
-                            Dim eodPayload As Dictionary(Of Date, Payload) = Nothing
-                            Select Case _category
-                                Case Common.DataBaseTable.Intraday_Cash
-                                    eodPayload = _cmn.GetRawPayload(Common.DataBaseTable.EOD_Cash, stock, chkDate, chkDate)
-                                Case Common.DataBaseTable.Intraday_Currency
-                                    eodPayload = _cmn.GetRawPayload(Common.DataBaseTable.EOD_Currency, stock, chkDate, chkDate)
-                                Case Common.DataBaseTable.Intraday_Commodity
-                                    eodPayload = _cmn.GetRawPayload(Common.DataBaseTable.EOD_Commodity, stock, chkDate, chkDate)
-                                Case Common.DataBaseTable.Intraday_Futures
-                                    eodPayload = _cmn.GetRawPayload(Common.DataBaseTable.EOD_Futures, stock, chkDate, chkDate)
-                                Case Else
-                                    Throw New NotImplementedException
-                            End Select
-                            _canceller.Token.ThrowIfCancellationRequested()
-                            If eodPayload IsNot Nothing AndAlso eodPayload.Count > 0 Then
-                                Dim open As Decimal = eodPayload.LastOrDefault.Value.Open
-                                Dim highBreak As Boolean = False
-                                Dim lowBreak As Boolean = False
-
-                                Dim row As DataRow = ret.NewRow
-                                row("Date") = chkDate.ToString("dd-MM-yyyy")
-                                row("Trading Symbol") = eodPayload.LastOrDefault.Value.TradingSymbol
-
-                                For Each runningPayload In currentDayPayload
-                                    _canceller.Token.ThrowIfCancellationRequested()
-                                    If Not highBreak OrElse Not lowBreak Then
-                                        If runningPayload.Value.Ticks IsNot Nothing AndAlso runningPayload.Value.Ticks.Count > 0 Then
-                                            For Each runningTick In runningPayload.Value.Ticks
-                                                If Not highBreak AndAlso runningTick.Open > open Then
-                                                    row("O=H") = runningTick.PayloadDate.ToString("HH:mm:ss")
-                                                    highBreak = True
-                                                End If
-                                                If Not lowBreak AndAlso runningTick.Open < open Then
-                                                    row("O=L") = runningTick.PayloadDate.ToString("HH:mm:ss")
-                                                    lowBreak = True
-                                                End If
-                                            Next
-                                        End If
-                                    End If
-                                Next
-                                ret.Rows.Add(row)
-                            End If
+                            For Each runningPayload In currentDayPayload
+                                _canceller.Token.ThrowIfCancellationRequested()
+                                If swingHighPayload(runningPayload.Value.PayloadDate) <> swingHighPayload(runningPayload.Value.PreviousCandlePayload.PayloadDate) AndAlso
+                                    swingLowPayload(runningPayload.Value.PayloadDate) <> swingLowPayload(runningPayload.Value.PreviousCandlePayload.PayloadDate) AndAlso
+                                    swingHighPayload(runningPayload.Value.PayloadDate) = runningPayload.Value.PreviousCandlePayload.High AndAlso
+                                    swingLowPayload(runningPayload.Value.PayloadDate) = runningPayload.Value.PreviousCandlePayload.Low Then
+                                    Dim row As DataRow = ret.NewRow
+                                    row("Date") = runningPayload.Key.ToString("dd-MM-yyyy HH:mm:ss")
+                                    row("Instrument") = runningPayload.Value.TradingSymbol
+                                    ret.Rows.Add(row)
+                                End If
+                            Next
                         End If
                     End If
                 Next

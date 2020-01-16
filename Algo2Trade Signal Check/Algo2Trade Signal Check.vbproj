@@ -127,6 +127,7 @@
     <Compile Include="StrategyRules\ReversaHHLLBreakout.vb" />
     <Compile Include="StrategyRules\SpotFutureArbritrage.vb" />
     <Compile Include="StrategyRules\StallPattern.vb" />
+    <Compile Include="StrategyRules\SwingCandle.vb" />
     <Compile Include="StrategyRules\VolumeIndex.vb" />
     <Compile Include="StrategyRules\VolumeWithCandleRange.vb" />
   </ItemGroup>
