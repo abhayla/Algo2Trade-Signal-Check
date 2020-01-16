@@ -12,6 +12,7 @@ Public Class SupertrendSMAOpenHighLow
         ret.Columns.Add("Trading Symbol")
         ret.Columns.Add("Time")
         ret.Columns.Add("Direction")
+        ret.Columns.Add("Price")
 
         Dim stockData As StockSelection = New StockSelection(_canceller, _category, _cmn, _fileName)
         AddHandler stockData.Heartbeat, AddressOf OnHeartbeat
@@ -71,13 +72,13 @@ Public Class SupertrendSMAOpenHighLow
                             Dim eodPayload As Dictionary(Of Date, Payload) = Nothing
                             Select Case _category
                                 Case Common.DataBaseTable.Intraday_Cash
-                                    eodPayload = _cmn.GetRawPayload(Common.DataBaseTable.EOD_Cash, stock, chkDate.AddDays(-200), chkDate)
+                                    eodPayload = _cmn.GetRawPayload(Common.DataBaseTable.EOD_Cash, stock, chkDate.AddDays(-400), chkDate)
                                 Case Common.DataBaseTable.Intraday_Currency
-                                    eodPayload = _cmn.GetRawPayload(Common.DataBaseTable.EOD_Currency, stock, chkDate.AddDays(-200), chkDate)
+                                    eodPayload = _cmn.GetRawPayload(Common.DataBaseTable.EOD_Currency, stock, chkDate.AddDays(-400), chkDate)
                                 Case Common.DataBaseTable.Intraday_Commodity
-                                    eodPayload = _cmn.GetRawPayload(Common.DataBaseTable.EOD_Commodity, stock, chkDate.AddDays(-200), chkDate)
+                                    eodPayload = _cmn.GetRawPayload(Common.DataBaseTable.EOD_Commodity, stock, chkDate.AddDays(-400), chkDate)
                                 Case Common.DataBaseTable.Intraday_Futures
-                                    eodPayload = _cmn.GetRawPayload(Common.DataBaseTable.EOD_Futures, stock, chkDate.AddDays(-200), chkDate)
+                                    eodPayload = _cmn.GetRawPayload(Common.DataBaseTable.EOD_Futures, stock, chkDate.AddDays(-400), chkDate)
                             End Select
                             _canceller.Token.ThrowIfCancellationRequested()
                             If eodPayload IsNot Nothing AndAlso eodPayload.Count > 0 Then
@@ -103,6 +104,7 @@ Public Class SupertrendSMAOpenHighLow
                                                         row("Trading Symbol") = runningTick.TradingSymbol
                                                         row("Time") = runningTick.PayloadDate.ToString("HH:mm:ss")
                                                         row("Direction") = "Buy"
+                                                        row("Price") = open
                                                         ret.Rows.Add(row)
                                                         highBreaked = True
                                                         Exit For
@@ -128,6 +130,7 @@ Public Class SupertrendSMAOpenHighLow
                                                         row("Trading Symbol") = runningTick.TradingSymbol
                                                         row("Time") = runningTick.PayloadDate.ToString("HH:mm:ss")
                                                         row("Direction") = "Sell"
+                                                        row("Price") = open
                                                         ret.Rows.Add(row)
                                                         lowBreaked = True
                                                         Exit For
