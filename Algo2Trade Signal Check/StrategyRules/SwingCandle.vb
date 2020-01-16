@@ -75,8 +75,8 @@ Public Class SwingCandle
                                     swingHighPayload(runningPayload.Value.PayloadDate) = runningPayload.Value.PreviousCandlePayload.High AndAlso
                                     swingLowPayload(runningPayload.Value.PayloadDate) = runningPayload.Value.PreviousCandlePayload.Low Then
                                     Dim row As DataRow = ret.NewRow
-                                    row("Date") = runningPayload.Key.ToString("dd-MM-yyyy HH:mm:ss")
-                                    row("Instrument") = runningPayload.Value.TradingSymbol
+                                    row("Date") = runningPayload.Value.PreviousCandlePayload.PayloadDate.ToString("dd-MM-yyyy HH:mm:ss")
+                                    row("Instrument") = runningPayload.Value.PreviousCandlePayload.TradingSymbol
                                     ret.Rows.Add(row)
                                 End If
                             Next
