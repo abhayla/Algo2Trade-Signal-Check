@@ -139,6 +139,7 @@ Public Class DoubleTopDoubleBottom
                                 End If
                             Else
                                 If fractalPayload(middleCandleTime) < runningPayload.Value Then
+                                    firstCandleTime = middleCandleTime
                                     middleCandleTime = runningPayload.Key
                                 ElseIf fractalPayload(middleCandleTime) > runningPayload.Value Then
                                     lastCandleTime = runningPayload.Key
@@ -159,6 +160,7 @@ Public Class DoubleTopDoubleBottom
                                 End If
                             Else
                                 If fractalPayload(middleCandleTime) > runningPayload.Value Then
+                                    firstCandleTime = middleCandleTime
                                     middleCandleTime = runningPayload.Key
                                 ElseIf fractalPayload(middleCandleTime) < runningPayload.Value Then
                                     lastCandleTime = runningPayload.Key
