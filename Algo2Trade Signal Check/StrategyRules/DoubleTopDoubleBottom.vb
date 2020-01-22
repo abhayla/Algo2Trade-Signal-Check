@@ -12,7 +12,9 @@ Public Class DoubleTopDoubleBottom
         ret.Columns.Add("Trading Symbol")
         ret.Columns.Add("Top/Bottom")
         ret.Columns.Add("ATR")
-        ret.Columns.Add("At Day HL")
+        ret.Columns.Add("At Day H/L")
+        ret.Columns.Add("Current U Time")
+        ret.Columns.Add("Previous U Time")
 
         Dim stockData As StockSelection = New StockSelection(_canceller, _category, _cmn, _fileName)
         AddHandler stockData.Heartbeat, AddressOf OnHeartbeat
@@ -67,6 +69,7 @@ Public Class DoubleTopDoubleBottom
                         Next
 
                         'Main Logic
+                        OnHeartbeat("Processing Data")
                         If currentDayPayload IsNot Nothing AndAlso currentDayPayload.Count > 0 Then
                             Dim fractalHighPayload As Dictionary(Of Date, Decimal) = Nothing
                             Dim fractalLowPayload As Dictionary(Of Date, Decimal) = Nothing
@@ -74,7 +77,12 @@ Public Class DoubleTopDoubleBottom
                             Dim atrPayload As Dictionary(Of Date, Decimal) = Nothing
                             Indicator.ATR.CalculateATR(14, inputPayload, atrPayload)
 
+                            Dim dayHigh As Decimal = Decimal.MinValue
+                            Dim dayLow As Decimal = Decimal.MaxValue
                             For Each runningPayload In currentDayPayload.Keys
+                                _canceller.Token.ThrowIfCancellationRequested()
+                                dayHigh = Math.Max(dayHigh, currentDayPayload(runningPayload).High)
+                                dayLow = Math.Min(dayLow, currentDayPayload(runningPayload).Low)
                                 _canceller.Token.ThrowIfCancellationRequested()
                                 If fractalHighPayload(currentDayPayload(runningPayload).PreviousCandlePayload.PayloadDate) > fractalHighPayload(runningPayload) Then
                                     Dim currentFractalU As Tuple(Of Date, Date) = GetFractalUFormingCandle(fractalHighPayload, runningPayload, 1)
@@ -88,7 +96,9 @@ Public Class DoubleTopDoubleBottom
                                                 row("Trading Symbol") = inputPayload(runningPayload).TradingSymbol
                                                 row("Top/Bottom") = "Top"
                                                 row("ATR") = atr
-                                                row("At Day HL") = False
+                                                row("At Day H/L") = inputPayload(currentFractalU.Item1).PreviousCandlePayload.High = dayHigh OrElse inputPayload(previousFractalU.Item1).PreviousCandlePayload.High = dayHigh
+                                                row("Current U Time") = currentFractalU.Item2.ToString("dd-MM-yyyy HH:mm:ss")
+                                                row("Previous U Time") = previousFractalU.Item2.ToString("dd-MM-yyyy HH:mm:ss")
 
                                                 ret.Rows.Add(row)
                                             End If
@@ -108,7 +118,9 @@ Public Class DoubleTopDoubleBottom
                                                 row("Trading Symbol") = inputPayload(runningPayload).TradingSymbol
                                                 row("Top/Bottom") = "Bottom"
                                                 row("ATR") = atr
-                                                row("At Day HL") = False
+                                                row("At Day H/L") = inputPayload(currentFractalU.Item1).PreviousCandlePayload.Low = dayLow OrElse inputPayload(previousFractalU.Item1).PreviousCandlePayload.Low = dayLow
+                                                row("Current U Time") = currentFractalU.Item2.ToString("dd-MM-yyyy HH:mm:ss")
+                                                row("Previous U Time") = previousFractalU.Item2.ToString("dd-MM-yyyy HH:mm:ss")
 
                                                 ret.Rows.Add(row)
                                             End If
