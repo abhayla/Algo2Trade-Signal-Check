@@ -106,7 +106,7 @@ Public Class DoubleTopDoubleBottom
                                     End If
                                 End If
                                 _canceller.Token.ThrowIfCancellationRequested()
-                                If fractalLowPayload(currentDayPayload(runningPayload).PreviousCandlePayload.PayloadDate) < fractalHighPayload(runningPayload) Then
+                                If fractalLowPayload(currentDayPayload(runningPayload).PreviousCandlePayload.PayloadDate) < fractalLowPayload(runningPayload) Then
                                     Dim currentFractalU As Tuple(Of Date, Date) = GetFractalUFormingCandle(fractalLowPayload, runningPayload, -1)
                                     If currentFractalU IsNot Nothing AndAlso currentFractalU.Item2 = runningPayload Then
                                         Dim previousFractalU As Tuple(Of Date, Date) = GetFractalUFormingCandle(fractalLowPayload, currentFractalU.Item1, -1)
