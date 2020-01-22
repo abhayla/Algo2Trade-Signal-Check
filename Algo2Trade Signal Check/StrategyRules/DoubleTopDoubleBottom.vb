@@ -11,6 +11,7 @@ Public Class DoubleTopDoubleBottom
         ret.Columns.Add("Date")
         ret.Columns.Add("Trading Symbol")
         ret.Columns.Add("Top/Bottom")
+        ret.Columns.Add("ATR")
         ret.Columns.Add("At Day HL")
 
         Dim stockData As StockSelection = New StockSelection(_canceller, _category, _cmn, _fileName)
@@ -70,6 +71,8 @@ Public Class DoubleTopDoubleBottom
                             Dim fractalHighPayload As Dictionary(Of Date, Decimal) = Nothing
                             Dim fractalLowPayload As Dictionary(Of Date, Decimal) = Nothing
                             Indicator.FractalBands.CalculateFractal(inputPayload, fractalHighPayload, fractalLowPayload)
+                            Dim atrPayload As Dictionary(Of Date, Decimal) = Nothing
+                            Indicator.ATR.CalculateATR(14, inputPayload, atrPayload)
 
                             For Each runningPayload In currentDayPayload.Keys
                                 _canceller.Token.ThrowIfCancellationRequested()
@@ -78,13 +81,17 @@ Public Class DoubleTopDoubleBottom
                                     If currentFractalU IsNot Nothing AndAlso currentFractalU.Item2 = runningPayload Then
                                         Dim previousFractalU As Tuple(Of Date, Date) = GetFractalUFormingCandle(fractalHighPayload, currentFractalU.Item1, 1)
                                         If previousFractalU IsNot Nothing Then
-                                            Dim row As DataRow = ret.NewRow
-                                            row("Date") = inputPayload(runningPayload).PayloadDate
-                                            row("Trading Symbol") = inputPayload(runningPayload).TradingSymbol
-                                            row("Top/Bottom") = "Top"
-                                            row("At Day HL") = False
+                                            Dim atr As Decimal = Math.Round(atrPayload(runningPayload), 4)
+                                            If Math.Abs(inputPayload(currentFractalU.Item1).PreviousCandlePayload.High - inputPayload(previousFractalU.Item1).PreviousCandlePayload.High) <= atr Then
+                                                Dim row As DataRow = ret.NewRow
+                                                row("Date") = inputPayload(runningPayload).PayloadDate.ToString("dd-MM-yyyy HH:mm:ss")
+                                                row("Trading Symbol") = inputPayload(runningPayload).TradingSymbol
+                                                row("Top/Bottom") = "Top"
+                                                row("ATR") = atr
+                                                row("At Day HL") = False
 
-                                            ret.Rows.Add(row)
+                                                ret.Rows.Add(row)
+                                            End If
                                         End If
                                     End If
                                 End If
@@ -94,13 +101,17 @@ Public Class DoubleTopDoubleBottom
                                     If currentFractalU IsNot Nothing AndAlso currentFractalU.Item2 = runningPayload Then
                                         Dim previousFractalU As Tuple(Of Date, Date) = GetFractalUFormingCandle(fractalLowPayload, currentFractalU.Item1, -1)
                                         If previousFractalU IsNot Nothing Then
-                                            Dim row As DataRow = ret.NewRow
-                                            row("Date") = inputPayload(runningPayload).PayloadDate
-                                            row("Trading Symbol") = inputPayload(runningPayload).TradingSymbol
-                                            row("Top/Bottom") = "Bottom"
-                                            row("At Day HL") = False
+                                            Dim atr As Decimal = Math.Round(atrPayload(runningPayload), 4)
+                                            If Math.Abs(inputPayload(currentFractalU.Item1).PreviousCandlePayload.Low - inputPayload(previousFractalU.Item1).PreviousCandlePayload.Low) <= atr Then
+                                                Dim row As DataRow = ret.NewRow
+                                                row("Date") = inputPayload(runningPayload).PayloadDate.ToString("dd-MM-yyyy HH:mm:ss")
+                                                row("Trading Symbol") = inputPayload(runningPayload).TradingSymbol
+                                                row("Top/Bottom") = "Bottom"
+                                                row("ATR") = atr
+                                                row("At Day HL") = False
 
-                                            ret.Rows.Add(row)
+                                                ret.Rows.Add(row)
+                                            End If
                                         End If
                                     End If
                                 End If
