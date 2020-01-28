@@ -132,6 +132,7 @@
     <Compile Include="StrategyRules\SwingCandle.vb" />
     <Compile Include="StrategyRules\VolumeIndex.vb" />
     <Compile Include="StrategyRules\VolumeWithCandleRange.vb" />
+    <Compile Include="StrategyRules\WickBeyondSlabLevel.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmMain.resx">

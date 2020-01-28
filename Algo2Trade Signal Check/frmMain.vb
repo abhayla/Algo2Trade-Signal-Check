@@ -341,6 +341,8 @@ Public Class frmMain
                     rule = New SupertrendSMAOpenHighLow(_canceller, category, timeFrame, useHA, instrumentName, filePath)
                 Case 31
                     rule = New DoubleTopDoubleBottom(_canceller, category, timeFrame, useHA, instrumentName, filePath)
+                Case 32
+                    rule = New WickBeyondSlabLevel(_canceller, category, timeFrame, useHA, instrumentName, filePath)
             End Select
             AddHandler rule.Heartbeat, AddressOf OnHeartbeat
             AddHandler rule.WaitingFor, AddressOf OnWaitingFor
@@ -426,6 +428,8 @@ Public Class frmMain
                 lblDescription.Text = String.Format("Daily candle should be above supertrend and 200 MA and for first X minute Open=High and vice versa")
             Case 31
                 lblDescription.Text = String.Format("Doule fractal top with max distance of 1 ATR and vice versa")
+            Case 32
+                lblDescription.Text = String.Format("Description ...")
             Case Else
                 Throw New NotImplementedException
         End Select
