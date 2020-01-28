@@ -91,7 +91,7 @@ Public Class WickBeyondSlabLevel
                                                     row("Date") = runningPayload.Value.PayloadDate.ToString("dd-MM-yyyy HH:mm:ss")
                                                     row("Trading Symbol") = runningPayload.Value.TradingSymbol
                                                     row("Slab") = slab
-                                                    row("Direction") = "BUY"
+                                                    row("Direction") = "SELL"
                                                     row("Slab Price") = openHighLevel
 
                                                     ret.Rows.Add(row)
@@ -101,7 +101,7 @@ Public Class WickBeyondSlabLevel
                                                 row("Date") = runningPayload.Value.PayloadDate.ToString("dd-MM-yyyy HH:mm:ss")
                                                 row("Trading Symbol") = runningPayload.Value.TradingSymbol
                                                 row("Slab") = slab
-                                                row("Direction") = "BUY"
+                                                row("Direction") = "SELL"
                                                 row("Slab Price") = closeHighLevel
 
                                                 ret.Rows.Add(row)
@@ -113,7 +113,7 @@ Public Class WickBeyondSlabLevel
                                                     row("Date") = runningPayload.Value.PayloadDate.ToString("dd-MM-yyyy HH:mm:ss")
                                                     row("Trading Symbol") = runningPayload.Value.TradingSymbol
                                                     row("Slab") = slab
-                                                    row("Direction") = "SELL"
+                                                    row("Direction") = "BUY"
                                                     row("Slab Price") = openLowLevel
 
                                                     ret.Rows.Add(row)
@@ -123,7 +123,7 @@ Public Class WickBeyondSlabLevel
                                                 row("Date") = runningPayload.Value.PayloadDate.ToString("dd-MM-yyyy HH:mm:ss")
                                                 row("Trading Symbol") = runningPayload.Value.TradingSymbol
                                                 row("Slab") = slab
-                                                row("Direction") = "SELL"
+                                                row("Direction") = "BUY"
                                                 row("Slab Price") = closeLowLevel
 
                                                 ret.Rows.Add(row)
