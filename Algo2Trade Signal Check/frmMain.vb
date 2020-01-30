@@ -343,6 +343,8 @@ Public Class frmMain
                     rule = New DoubleTopDoubleBottom(_canceller, category, timeFrame, useHA, instrumentName, filePath)
                 Case 32
                     rule = New WickBeyondSlabLevel(_canceller, category, timeFrame, useHA, instrumentName, filePath)
+                Case 33
+                    rule = New CandleRangeWithATR(_canceller, category, timeFrame, useHA, instrumentName, filePath)
             End Select
             AddHandler rule.Heartbeat, AddressOf OnHeartbeat
             AddHandler rule.WaitingFor, AddressOf OnWaitingFor
@@ -429,6 +431,8 @@ Public Class frmMain
             Case 31
                 lblDescription.Text = String.Format("Doule fractal top with max distance of 1 ATR and vice versa")
             Case 32
+                lblDescription.Text = String.Format("Description ...")
+            Case 33
                 lblDescription.Text = String.Format("Description ...")
             Case Else
                 Throw New NotImplementedException
