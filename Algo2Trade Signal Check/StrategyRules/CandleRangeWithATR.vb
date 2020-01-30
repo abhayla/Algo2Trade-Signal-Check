@@ -18,6 +18,7 @@ Public Class CandleRangeWithATR
         ret.Columns.Add("Candle Range")
         ret.Columns.Add("ATR")
         ret.Columns.Add("CR ATR %")
+        ret.Columns.Add("CR Slab %")
 
         Dim stockData As StockSelection = New StockSelection(_canceller, _category, _cmn, _fileName)
         AddHandler stockData.Heartbeat, AddressOf OnHeartbeat
@@ -76,28 +77,59 @@ Public Class CandleRangeWithATR
                             Dim atrPayload As Dictionary(Of Date, Decimal) = Nothing
                             Indicator.ATR.CalculateATR(14, inputPayload, atrPayload)
 
-                            For Each runningPayload In currentDayPayload.Keys
-                                _canceller.Token.ThrowIfCancellationRequested()
-                                Dim row As DataRow = ret.NewRow
-                                row("Date") = inputPayload(runningPayload).PayloadDate
-                                row("Trading Symbol") = inputPayload(runningPayload).TradingSymbol
-                                row("Open") = inputPayload(runningPayload).Open
-                                row("Low") = inputPayload(runningPayload).Low
-                                row("High") = inputPayload(runningPayload).High
-                                row("Close") = inputPayload(runningPayload).Close
-                                row("Volume") = inputPayload(runningPayload).Volume
-                                row("Candle Range") = inputPayload(runningPayload).CandleRange
-                                row("ATR") = Math.Round(atrPayload(runningPayload), 4)
-                                row("CR ATR %") = Math.Round((inputPayload(runningPayload).CandleRange / atrPayload(runningPayload)) * 100, 4)
+                            Dim eodPayload As Dictionary(Of Date, Payload) = _cmn.GetRawPayload(Common.DataBaseTable.EOD_Cash, stock, chkDate.AddDays(-200), chkDate)
+                            If eodPayload IsNot Nothing AndAlso eodPayload.Count > 100 Then
+                                Dim eodatrPayload As Dictionary(Of Date, Decimal) = Nothing
+                                Indicator.ATR.CalculateATR(14, eodPayload, eodatrPayload)
 
-                                ret.Rows.Add(row)
-                            Next
+                                If eodatrPayload IsNot Nothing AndAlso eodatrPayload.ContainsKey(chkDate.Date) Then
+                                    Dim slab As Decimal = CalculateSlab(currentDayPayload.Values.FirstOrDefault.Open, eodatrPayload(chkDate.Date))
+
+                                    For Each runningPayload In currentDayPayload.Keys
+                                        _canceller.Token.ThrowIfCancellationRequested()
+                                        Dim row As DataRow = ret.NewRow
+                                        row("Date") = inputPayload(runningPayload).PayloadDate
+                                        row("Trading Symbol") = inputPayload(runningPayload).TradingSymbol
+                                        row("Open") = inputPayload(runningPayload).Open
+                                        row("Low") = inputPayload(runningPayload).Low
+                                        row("High") = inputPayload(runningPayload).High
+                                        row("Close") = inputPayload(runningPayload).Close
+                                        row("Volume") = inputPayload(runningPayload).Volume
+                                        row("Candle Range") = inputPayload(runningPayload).CandleRange
+                                        row("ATR") = Math.Round(atrPayload(runningPayload), 4)
+                                        row("CR ATR %") = Math.Round((inputPayload(runningPayload).CandleRange / atrPayload(runningPayload)) * 100, 4)
+                                        row("CR Slab %") = Math.Round((inputPayload(runningPayload).CandleRange / slab) * 100, 4)
+
+                                        ret.Rows.Add(row)
+                                    Next
+                                End If
+                            End If
                         End If
                     End If
                 Next
             End If
             chkDate = chkDate.AddDays(1)
         End While
+        Return ret
+    End Function
+
+    Private Function CalculateSlab(ByVal price As Decimal, ByVal atr As Decimal) As Decimal
+        Dim ret As Decimal = 0.5
+        Dim slabList As List(Of Decimal) = New List(Of Decimal) From {0.5, 1, 2.5, 5, 10, 15}
+        Dim supportedSlabList As List(Of Decimal) = slabList.FindAll(Function(x)
+                                                                         Return x <= atr / 8
+                                                                     End Function)
+        If supportedSlabList IsNot Nothing AndAlso supportedSlabList.Count > 0 Then
+            ret = supportedSlabList.Max
+            If price * 1 / 100 < ret Then
+                Dim newSupportedSlabList As List(Of Decimal) = supportedSlabList.FindAll(Function(x)
+                                                                                             Return x <= price * 1 / 100
+                                                                                         End Function)
+                If newSupportedSlabList IsNot Nothing AndAlso newSupportedSlabList.Count > 0 Then
+                    ret = newSupportedSlabList.Max
+                End If
+            End If
+        End If
         Return ret
     End Function
 End Class
