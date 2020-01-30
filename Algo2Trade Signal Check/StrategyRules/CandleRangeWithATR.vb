@@ -87,7 +87,7 @@ Public Class CandleRangeWithATR
                                 row("Close") = inputPayload(runningPayload).Close
                                 row("Volume") = inputPayload(runningPayload).Volume
                                 row("Candle Range") = inputPayload(runningPayload).CandleRange
-                                row("ATR") = atrPayload(runningPayload)
+                                row("ATR") = Math.Round(atrPayload(runningPayload), 4)
                                 row("CR ATR %") = Math.Round((inputPayload(runningPayload).CandleRange / atrPayload(runningPayload)) * 100, 4)
 
                                 ret.Rows.Add(row)
