@@ -18,6 +18,7 @@ Public Class CandleRangeWithATR
         ret.Columns.Add("Candle Range")
         ret.Columns.Add("ATR")
         ret.Columns.Add("CR ATR %")
+        ret.Columns.Add("Slab")
         ret.Columns.Add("CR Slab %")
 
         Dim stockData As StockSelection = New StockSelection(_canceller, _category, _cmn, _fileName)
@@ -98,6 +99,7 @@ Public Class CandleRangeWithATR
                                         row("Candle Range") = inputPayload(runningPayload).CandleRange
                                         row("ATR") = Math.Round(atrPayload(runningPayload), 4)
                                         row("CR ATR %") = Math.Round((inputPayload(runningPayload).CandleRange / atrPayload(runningPayload)) * 100, 4)
+                                        row("Slab") = slab
                                         row("CR Slab %") = Math.Round((inputPayload(runningPayload).CandleRange / slab) * 100, 4)
 
                                         ret.Rows.Add(row)
