@@ -345,6 +345,8 @@ Public Class frmMain
                     rule = New WickBeyondSlabLevel(_canceller, category, timeFrame, useHA, instrumentName, filePath)
                 Case 33
                     rule = New CandleRangeWithATR(_canceller, category, timeFrame, useHA, instrumentName, filePath)
+                Case 34
+                    rule = New FractalDeep(_canceller, category, timeFrame, useHA, instrumentName, filePath)
             End Select
             AddHandler rule.Heartbeat, AddressOf OnHeartbeat
             AddHandler rule.WaitingFor, AddressOf OnWaitingFor
@@ -391,11 +393,11 @@ Public Class frmMain
             Case 11
                 lblDescription.Text = String.Format("Description ...")
             Case 12
-                lblDescription.Text = String.Format("Description ...")
+                lblDescription.Text = String.Format("Previous candle bottom wick is 60% of candle range and Previous 3 candle range is 1/2 of ATR and previous 3 candle forms lower high and lower low and current candle breaks previous candle high and vice versa")
             Case 13
                 lblDescription.Text = String.Format("Description ...")
             Case 14
-                lblDescription.Text = String.Format("Description ...")
+                lblDescription.Text = String.Format("Previous candle touches the vwap and current candle breaks high/low of previou candle. Entry at previous candle high/low. Stoploss at vwap. Loss is less than 5% of required capital(using 1 future lot and 13x margin). If loss stoploss is less than 1/3 of candle range the 'Tag'=Candle Range or 'Tag'=Capital")
             Case 15
                 lblDescription.Text = String.Format("Description ...")
             Case 16
@@ -431,9 +433,11 @@ Public Class frmMain
             Case 31
                 lblDescription.Text = String.Format("Doule fractal top with max distance of 1 ATR and vice versa")
             Case 32
-                lblDescription.Text = String.Format("Description ...")
+                lblDescription.Text = String.Format("Candle wick is outside the open or close slab level")
             Case 33
-                lblDescription.Text = String.Format("Description ...")
+                lblDescription.Text = String.Format("Candle Range % according to ATR and Slab")
+            Case 34
+                lblDescription.Text = String.Format("Fractal high deeps lower fractal or vice versa")
             Case Else
                 Throw New NotImplementedException
         End Select
