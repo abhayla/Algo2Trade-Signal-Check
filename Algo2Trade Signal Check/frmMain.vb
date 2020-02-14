@@ -346,7 +346,7 @@ Public Class frmMain
                 Case 33
                     rule = New CandleRangeWithATR(_canceller, category, timeFrame, useHA, instrumentName, filePath)
                 Case 34
-                    rule = New FractalDeep(_canceller, category, timeFrame, useHA, instrumentName, filePath)
+                    rule = New FractalDip(_canceller, category, timeFrame, useHA, instrumentName, filePath)
             End Select
             AddHandler rule.Heartbeat, AddressOf OnHeartbeat
             AddHandler rule.WaitingFor, AddressOf OnWaitingFor
@@ -437,7 +437,7 @@ Public Class frmMain
             Case 33
                 lblDescription.Text = String.Format("Candle Range % according to ATR and Slab")
             Case 34
-                lblDescription.Text = String.Format("Fractal high deeps lower fractal or vice versa")
+                lblDescription.Text = String.Format("Fractal high dips lower fractal or vice versa")
             Case Else
                 Throw New NotImplementedException
         End Select

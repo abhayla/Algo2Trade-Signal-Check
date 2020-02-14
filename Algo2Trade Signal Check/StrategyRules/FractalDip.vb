@@ -1,6 +1,6 @@
 ﻿Imports Algo2TradeBLL
 Imports System.Threading
-Public Class FractalDeep
+Public Class FractalDip
     Inherits Rule
     Public Sub New(ByVal canceller As CancellationTokenSource, ByVal stockCategory As Integer, ByVal timeFrame As Integer, ByVal useHA As Boolean, ByVal stockName As String, ByVal fileName As String)
         MyBase.New(canceller, stockCategory, timeFrame, useHA, stockName, fileName)
