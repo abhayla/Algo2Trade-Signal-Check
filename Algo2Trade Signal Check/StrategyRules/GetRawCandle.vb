@@ -15,8 +15,6 @@ Public Class GetRawCandle
         ret.Columns.Add("High")
         ret.Columns.Add("Close")
         ret.Columns.Add("Volume")
-        ret.Columns.Add("Value")
-        ret.Columns.Add("Color")
 
         Dim stockData As StockSelection = New StockSelection(_canceller, _category, _cmn, _fileName)
         AddHandler stockData.Heartbeat, AddressOf OnHeartbeat
@@ -72,10 +70,6 @@ Public Class GetRawCandle
 
                         'Main Logic
                         If currentDayPayload IsNot Nothing AndAlso currentDayPayload.Count > 0 Then
-                            Dim atrTrailingPayloads As Dictionary(Of Date, Decimal) = Nothing
-                            Dim atrTrailingColorPayloads As Dictionary(Of Date, Color) = Nothing
-                            Indicator.ATRTrailingStop.CalculateATRTrailingStop(7, 3, inputPayload, atrTrailingPayloads, atrTrailingColorPayloads)
-
                             For Each runningPayload In currentDayPayload.Keys
                                 _canceller.Token.ThrowIfCancellationRequested()
                                 Dim row As DataRow = ret.NewRow
@@ -86,8 +80,6 @@ Public Class GetRawCandle
                                 row("High") = inputPayload(runningPayload).High
                                 row("Close") = inputPayload(runningPayload).Close
                                 row("Volume") = inputPayload(runningPayload).Volume
-                                row("Value") = atrTrailingPayloads(runningPayload)
-                                row("Color") = atrTrailingColorPayloads(runningPayload).Name
 
                                 ret.Rows.Add(row)
                             Next
